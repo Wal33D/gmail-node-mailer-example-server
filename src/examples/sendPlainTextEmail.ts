@@ -34,11 +34,11 @@
 import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
 export async function sendPlainTextEmail(): Promise<ISendEmailResponse> {
-    // Define the recipient's email address
+    // Define the recipient's email address to whom the email will be sent.
     const recipientEmail = 'customer@glitchgaming.us'; 
-    // Define the subject of the email
+    // Optionally define the subject with emojis or special characters; automatically encoded to Base64. Defaults to 'No Subject' if not provided.
     const subject = 'Plain Text Email Demo: Welcome Aboard!';
-    // Define the plain text message to be sent
+    // Define the plain text message to be sent, containing simple and direct content for easy reading.
     const message = `
     Hi there!
 

@@ -39,10 +39,13 @@ import util from 'util';
 import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
 export async function sendSubscriptionRenewalEmail(): Promise<ISendEmailResponse> {
-    const recipientEmail = 'waleed@somnuslabs.com';
+    // Recipient email address to whom the renewal confirmation email will be sent.
+    const recipientEmail = 'customer@glitchgaming.us';
+    // Current date, used to stamp the time of subscription renewal.
     const currentDate = new Date();
+    // Formatted date string in 'YYYY-MM-DD' format, used in the email to display the renewal date.
     const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDate()}`;
-
+    // Subject of the email, which includes an emoji; the package automatically encodes it to Base64.
     const subject = '🔄 Your Subscription Has Been Renewed!';
     const message = `
     <!DOCTYPE html>

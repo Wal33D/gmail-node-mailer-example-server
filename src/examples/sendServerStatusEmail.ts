@@ -39,14 +39,14 @@ import util from 'util';
 import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
 export async function sendServerStatusEmail(status: 'start' | 'shutdown'): Promise<ISendEmailResponse> {
-    const recipientEmail = 'admin@glitchgaming.us'; // Email address to which the notification will be sent
-    const currentTime = new Date(); // Current time at the moment of function execution
-    const formattedTime = currentTime.toLocaleString(); // Current time formatted for readability
-
-    // Construct the subject line with an emoji for visual emphasis
+    // Define the recipient's email address to whom the server status will be sent.
+    const recipientEmail = 'admin@glitchgaming.us';
+    // Capture the current date and time, which is recorded to provide a timestamp for when the server status update is sent.
+    const currentTime = new Date();
+    // Format the current date and time for clear and human-readable presentation in the email body.
+    const formattedTime = currentTime.toLocaleString();
+    // Optionally define the subject line with an emoji for visual emphasis; defaults to 'No Subject' if not provided. The subject conveys the current server status.
     const subject = `🖥️ Server ${status.charAt(0).toUpperCase() + status.slice(1)} Status`;
-
-    // HTML content of the email
     const message = `
     <!DOCTYPE html>
     <html>
