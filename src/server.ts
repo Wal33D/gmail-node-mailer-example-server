@@ -1,20 +1,11 @@
 require('dotenv-flow').config();
-
 import express from 'express';
-
 import { initializeEmailClient } from './init/initializeEmailClient';
-import {
-    sendHtmlEmail,
-    sendPlainTextEmail,
-    sendNewPurchaseEmail,
-    sendServerStatusEmail,
-    sendHtmlEmailWithAttachment,
-    sendSubscriptionRenewalEmail
-} from './examples';
-
+import * as exampleFunctions from './examples';  // Importing all functions as an object
+import { ExampleFunctions } from './examples';
 
 declare global {
-    var gmailClient: any; // Global declaration for the Gmail client
+    var gmailClient: any;  // Global declaration for the Gmail client
 }
 
 const PORT = process.env.DEFAULT_URL
@@ -28,49 +19,31 @@ const PORT = process.env.DEFAULT_URL
     const emailClientResult = await initializeEmailClient();
     global.gmailClient = emailClientResult.gmailClient;
 
-    // Middleware to parse URL-encoded data and JSON
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
-
-    // Static file serving for downloadable content in the dummyFiles directory
     app.use('/files', express.static('dummyFiles'));
 
-    // Send a notification email when the server starts
-    const serverStartResult = await sendServerStatusEmail('start');
-    console.log('Server Start Email Send Result:', serverStartResult.sent);
-
-    // Start the server on the specified port and log the initialization summary
     const server = app.listen(PORT, () => {
         console.log('[Gmail-Node-Mailer Test Server] - Initialization Summary:');
         console.log('Server is listening on port:', PORT);
     });
 
-    // Setup graceful shutdown handling when receiving SIGINT (Ctrl+C)
     process.on('SIGINT', async () => {
-        // Notify about server shutdown via email
-        const serverStartResult = await sendServerStatusEmail('shutdown');
-        console.log('Server Shutdown Email Send Result:', serverStartResult.sent);
-
         server.close(() => {
             console.log('HTTP server closed.');
             process.exit(0);
         });
     });
 
-    // Demonstrate various email sending functionalities
-    const sendHTMLEmailResult = await sendHtmlEmail();
-    console.log('Service Notification Email Send Result:', sendHTMLEmailResult.sent);
+    // Assuming all functions exported from 'examples' return the same type of Promise
+    type FunctionType = () => Promise<{ sent: boolean }>;
 
-    const plainTextEmailResult = await sendPlainTextEmail();
-    console.log('Plain Text Email Send Result:', plainTextEmailResult.sent);
-
-    const htmlEmailWithAttachmentResult = await sendHtmlEmailWithAttachment();
-    console.log('HTML Email with Attachment Send Result:', htmlEmailWithAttachmentResult.sent);
-
-    const sendSubscriptionRenewalResult = await sendSubscriptionRenewalEmail();
-    console.log(`Send Subscription Renewal Email Result:`, sendSubscriptionRenewalResult.sent);
-
-    const sendNewPurchaseResult = await sendNewPurchaseEmail();
-    console.log(`Send New Purchase Email Result:`, sendNewPurchaseResult.sent);
-
+    // Now you can iterate over all the functions and log their results
+    Object.keys(exampleFunctions).forEach(async funcKey => {
+        const func = exampleFunctions[funcKey as keyof typeof exampleFunctions] as FunctionType;
+        if (typeof func === 'function') {
+            const result = await func();  // Call each function with proper typing
+            console.log(`${funcKey} Email Send Result:`, result.sent);
+        }
+    });
 })();

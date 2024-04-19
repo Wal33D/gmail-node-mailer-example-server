@@ -7,11 +7,11 @@
     "node": "18.18.2"
   },
   "scripts": {
-    "predev": "node generateIndex.js",
+    "predev": "node scripts/generateIndex.js",
     "dev": "nodemon --watch src --ext js,ts --exec \"ts-node src/server.ts\"",
-    "prebuild": "node generateIndex.js",
+    "prebuild": "node scripts/generateIndex.js",
     "build": "tsc",
-    "prestart": "node generateIndex.js",
+    "prestart": "node scripts/generateIndex.js",
     "start": "node build/server.js",
     "clean": "rimraf dist/* --glob",
     "test": "echo \"Error: no test specified\" && exit 1"
