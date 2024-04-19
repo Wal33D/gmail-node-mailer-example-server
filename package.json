@@ -7,11 +7,14 @@
     "node": "18.18.2"
   },
   "scripts": {
-    "build": "yarn tsc",
+    "predev": "node generateIndex.js",
+    "dev": "nodemon --watch src --ext js,ts --exec \"ts-node src/server.ts\"",
+    "prebuild": "node generateIndex.js",
+    "build": "tsc",
+    "prestart": "node generateIndex.js",
     "start": "node build/server.js",
     "clean": "rimraf dist/* --glob",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch src --ext js,ts --exec \"ts-node src/server.ts\""
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Wal33D",
   "license": "ISC",

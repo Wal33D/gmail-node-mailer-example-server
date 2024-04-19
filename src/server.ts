@@ -1,13 +1,17 @@
 require('dotenv-flow').config();
 
 import express from 'express';
-import { sendHtmlEmail } from './examples/sendHtmlEmail';
-import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
-import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
-import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
+
 import { initializeEmailClient } from './init/initializeEmailClient';
-import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
-import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
+import {
+    sendHtmlEmail,
+    sendPlainTextEmail,
+    sendNewPurchaseEmail,
+    sendServerStatusEmail,
+    sendHtmlEmailWithAttachment,
+    sendSubscriptionRenewalEmail
+} from './examples';
+
 
 declare global {
     var gmailClient: any; // Global declaration for the Gmail client
