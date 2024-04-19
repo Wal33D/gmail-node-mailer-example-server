@@ -2,14 +2,29 @@
  * Example: Sending a purchase confirmation email with the 'gmail-node-mailer' package.
  *
  * This function serves as a sample demonstration of how to use the 'gmail-node-mailer' package to send an HTML formatted email with multiple attachments in a Node.js environment. The example illustrates:
- *   - Automatic encoding of email subjects, including the use of emojis to enhance customer engagement.
+ *   - Automatic encoding of email subjects that contain special characters, such as emojis, demonstrating the package's ability to handle non-text elements within email headers.
  *   - Option to specify a sender email address different from the default, showcasing the package's flexibility in handling sender identities.
  *   - Handling of multiple attachments with automatic MIME type recognition, simplifying the inclusion of diverse file types such as PDF invoices and EPUB eBooks.
  * This function sends an email providing immediate access to an eBook via a direct download link, along with a detailed invoice, enhancing the customer's purchase experience by offering transparency and immediate product access.
  *
  * Interface Structures:
- *   - `ISendEmailParams`: { recipientEmail: string, senderEmail?: string, subject?: string, message: string, attachments?: IAttachment[] }
- *   - `ISendEmailResponse`: { sent: boolean, status: number | null, statusText: string | null, responseUrl: string | null, message: string, gmailResponse: any | null }
+ *   - `ISendEmailParams`:
+ *     {
+ *       recipientEmail: string,
+ *       senderEmail?: string,
+ *       subject?: string,  // Optional. Defaults to 'No Subject' if not provided.
+ *       message: string,
+ *       attachments?: IAttachment[]
+ *     }
+ *   - `ISendEmailResponse`:
+ *     {
+ *       sent: boolean,
+ *       status: number | null,
+ *       statusText: string | null,
+ *       responseUrl: string | null,
+ *       message: string,
+ *       gmailResponse: any | null
+ *     }
  *
  * This example highlights the 'gmail-node-mailer' package's capabilities for managing advanced email features effortlessly.
  *
