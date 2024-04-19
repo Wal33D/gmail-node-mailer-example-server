@@ -1,3 +1,11 @@
+/**
+ * Sends a plain text email.
+ * This function is designed to demonstrate the sending of a simple text email without any HTML formatting.
+ * It is ideal for sending straightforward, no-frills messages.
+ *
+ * @returns {Promise} - The result of the email sending operation.
+ */
+
 export async function sendPlainTextEmail() {
     const recipientEmail = 'waleed@somnuslabs.com'; 
     const subject = 'Plain Text Email Demo: Welcome Aboard!';

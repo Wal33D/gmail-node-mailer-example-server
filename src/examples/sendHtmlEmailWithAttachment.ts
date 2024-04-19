@@ -1,3 +1,11 @@
+/**
+ * Sends an HTML formatted email with a text attachment.
+ * This function demonstrates how to attach files to emails, particularly how to send text file attachments.
+ * It's configured to send a welcome notification for a service with an attached text file containing additional information.
+ *
+ * @returns {Promise} - The result of the email sending operation.
+ */
+
 export async function sendHtmlEmailWithAttachment() {
     const recipientEmail = 'waleed@somnuslabs.com';
     const subject = '🎉 Welcome to StreamBox!';

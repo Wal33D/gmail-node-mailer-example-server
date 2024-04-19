@@ -1,3 +1,10 @@
+/**
+ * Sends a general HTML formatted email to notify the user about service activation.
+ * This function is a demonstration of sending HTML emails using predefined styles and content.
+ *
+ * @returns {Promise} - The result of the email sending operation.
+ */
+
 export async function sendHtmlEmail() {
     const recipientEmail = 'waleed@somnuslabs.com';
     const subject = '🎉 Welcome to Our Service!';

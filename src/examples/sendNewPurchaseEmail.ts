@@ -1,3 +1,11 @@
+/**
+ * Sends a purchase confirmation email for a new eBook purchase.
+ * This function provides a detailed HTML message including a direct download link for the eBook and an attached PDF invoice.
+ * It's tailored for e-commerce contexts where immediate product access and purchase details are crucial.
+ *
+ * @returns {Promise} - The result of the email sending operation.
+ */
+
 import fs from 'fs';
 import util from 'util';
 
