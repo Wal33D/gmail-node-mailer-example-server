@@ -15,6 +15,8 @@ declare global {
     var gmailClient: any; // Global declaration for the Gmail client
 }
 
+const PORT = process.env.DEFAULT_PORT ? parseInt(process.env.DEFAULT_PORT, 10) : 6338;
+
 (async () => {
     const app = express();
 
@@ -34,10 +36,10 @@ declare global {
     console.log('Server Start Email Send Result:', serverStartResult.sent);
 
     // Start the server on the specified port and log the initialization summary
-    const server = app.listen(process.env.DEFAULT_PORT || 6338, () => {
+    const server = app.listen(PORT, () => {
         console.log('[Gmail-Node-Mailer Test Server] - Initialization Summary:');
-        console.log('Server is listening on port:', process.env.DEFAULT_PORT || 6338);
-    });
+        console.log('Server is listening on port:', PORT);
+    }); 
 
     // Setup graceful shutdown handling when receiving SIGINT (Ctrl+C)
     process.on('SIGINT', async () => {
