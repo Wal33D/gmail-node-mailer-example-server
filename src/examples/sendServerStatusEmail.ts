@@ -1,3 +1,12 @@
+/**
+ * Sends an email notification about the server's start or shutdown status.
+ * This function is triggered at the beginning or end of the server's lifecycle.
+ * It sends an email to a predefined recipient with the current status and time.
+ *
+ * @param {string} status - Indicates whether the server is starting or shutting down.
+ * @returns {Promise} - The result of the email sending operation.
+ */
+
 import fs from 'fs';
 import util from 'util';
 
