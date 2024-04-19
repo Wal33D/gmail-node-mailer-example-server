@@ -18,13 +18,18 @@
 
 import fs from 'fs';
 import util from 'util';
-import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types'; 
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
 export async function sendNewPurchaseEmail(): Promise<ISendEmailResponse> {
+    // Optional sender email address; default from initialization will be used if this is not specified.
     const senderEmail = 'no-reply@somnuslabs.com';
-    const recipientEmail = 'waleed@somnuslabs.com';
+    // Recipient email address to whom the email will be sent.
+    const recipientEmail = 'customer@glitchgaming.us';
+    // Subject of the email which includes an emoji; the package automatically encodes it to Base64.
     const subject = '📘 Your eBook Purchase Confirmation!';
-    const recipientName = recipientEmail.split('@')[0].charAt(0).toUpperCase() + recipientEmail.split('@')[0].slice(1);
+    // Recipient name set to a generic 'Customer Name' for example purposes.
+    const recipientName = 'Customer Name';
+    // URL for downloading the eBook; defaults to a local URL if no environment variable is set.
     const url = process.env.DEFAULT_URL || `http://localhost:6338`;
 
     const message = `
@@ -59,7 +64,7 @@ export async function sendNewPurchaseEmail(): Promise<ISendEmailResponse> {
         </div>
     </body>
     </html>
-    `;    
+    `;
 
     const ebookFilePath = './dummyFiles/SampleEBook.epub';
     const ebookData = await util.promisify(fs.readFile)(ebookFilePath);
