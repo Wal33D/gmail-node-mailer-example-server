@@ -9,14 +9,12 @@
 import fs from 'fs';
 import util from 'util';
 
-const URL = process.env.DEFAULT_URL || `http://localhost:6338`;
-
 export async function sendNewPurchaseEmail() {
     const senderEmail = 'no-reply@somnuslabs.com';
     const recipientEmail = 'waleed@somnuslabs.com';
     const subject = '📘 Your eBook Purchase Confirmation!';
-
     const recipientName = recipientEmail.split('@')[0].charAt(0).toUpperCase() + recipientEmail.split('@')[0].slice(1);
+    const url = process.env.DEFAULT_URL || `http://localhost:6338`;
 
     const message = `
     <!DOCTYPE html>
@@ -39,7 +37,7 @@ export async function sendNewPurchaseEmail() {
             <div class="content">
                 <p>Dear ${recipientName} 📖,</p>
                 <p>🎉 We are delighted to confirm your purchase of the eBook <strong>"The Echoes of Time"</strong>. This thrilling adventure awaits your exploration. 🚀</p>
-                <p>🔗 For immediate access to your eBook, please click <a href="${URL}/files/SampleEBook.epub">here</a>. We have also attached your eBook file to this email for your convenience.</p>
+                <p>🔗 For immediate access to your eBook, please click <a href="${url}/files/SampleEBook.epub">here</a>. We have also attached your eBook file to this email for your convenience.</p>
                 <p>🤝 Should you require any assistance or have any inquiries, feel free to contact our support team at <a href="mailto:${senderEmail}">${senderEmail}</a>.</p>
             </div>
             <div class="footer">
