@@ -1,15 +1,44 @@
 /**
- * Sends an email regarding the renewal of a subscription.
- * This function constructs an HTML email with details about the subscription renewal and attaches a PDF invoice.
- * It showcases handling of typical e-commerce communication, specifically for subscription-based services.
+ * Example: Sending a subscription renewal email with the 'gmail-node-mailer' package.
  *
- * @returns {Promise} - The result of the email sending operation.
+ * Sends a detailed HTML email to a customer about their successful subscription renewal. This function
+ * attaches a PDF invoice and a text file with usage statistics, enhancing the customer's post-purchase
+ * experience by providing comprehensive transaction details.
+ *
+ * This function demonstrates how to:
+ *   - Construct HTML content for emails to convey renewal confirmation and gratitude effectively.
+ *   - Attach multiple files (PDF invoice and text file for usage stats) with appropriate MIME types, showcasing the package's robust handling of mixed file formats.
+ *   - Use modern JavaScript features, like async/await and promises, for asynchronous operations in sending emails.
+ *
+ * Interface Structures:
+ *   - `ISendEmailParams`:
+ *     {
+ *       recipientEmail: string,
+ *       senderEmail?: string,  // Optional. Defaults to the email address initialized in the GmailMailer class if not provided.
+ *       subject?: string,  // Optional. Defaults to 'No Subject' if not provided.
+ *       message: string,
+ *       attachments?: IAttachment[]
+ *     }
+ *   - `ISendEmailResponse`:
+ *     {
+ *       sent: boolean,
+ *       status: number | null,
+ *       statusText: string | null,
+ *       responseUrl: string | null,
+ *       message: string,
+ *       gmailResponse: any | null
+ *     }
+ *
+ * This example underscores the 'gmail-node-mailer' package's utility in handling routine e-commerce communications for subscription services.
+ *
+ * @returns {Promise<ISendEmailResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
 
 import fs from 'fs';
 import util from 'util';
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
-export async function sendSubscriptionRenewalEmail() {
+export async function sendSubscriptionRenewalEmail(): Promise<ISendEmailResponse> {
     const recipientEmail = 'waleed@somnuslabs.com';
     const currentDate = new Date();
     const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth()+1}-${currentDate.getDate()}`;
@@ -63,5 +92,5 @@ export async function sendSubscriptionRenewalEmail() {
         message,
         subject,
         attachments
-    });
+    } as ISendEmailParams) as ISendEmailResponse;
 }

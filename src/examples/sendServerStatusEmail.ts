@@ -8,12 +8,25 @@
  * This function demonstrates how to use the 'gmail-node-mailer' package to:
  *   - Send HTML emails with dynamic content based on the server's operational status.
  *   - Automatically manage MIME types for email attachments, showcasing the package’s handling of non-textual file formats.
- *   - Utilize utility functions like 'util.promisify' to perform asynchronous file operations seamlessly integrated within an email sending workflow.
  *
- * Interface Example:
- *   - `sendEmail`: Sends an email with the specified parameters, handling both text and attachments with proper MIME type settings.
- *   - `ISendEmailParams`: Describes parameters like recipient, subject, message, and attachments.
- *   - `ISendEmailResponse`: Provides details on the email sending status, including success or failure information.
+ * Interface Structures:
+ *   - `ISendEmailParams`:
+ *     {
+ *       recipientEmail: string,
+ *       senderEmail?: string,  // Optional. Defaults to the email address initialized in the GmailMailer class if not provided.
+ *       subject?: string,  // Optional. Defaults to 'No Subject' if not provided.
+ *       message: string,
+ *       attachments?: IAttachment[]
+ *     }
+ *   - `ISendEmailResponse`:
+ *     {
+ *       sent: boolean,
+ *       status: number | null,
+ *       statusText: string | null,
+ *       responseUrl: string | null,
+ *       message: string,
+ *       gmailResponse: any | null
+ *     }
  *
  * This usage example highlights how the 'gmail-node-mailer' package can enhance server management by providing timely notifications about significant lifecycle events.
  *

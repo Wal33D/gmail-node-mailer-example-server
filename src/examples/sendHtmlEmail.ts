@@ -1,11 +1,39 @@
 /**
- * Sends a general HTML formatted email to notify the user about service activation.
- * This function is a demonstration of sending HTML emails using predefined styles and content.
+ * Example: Sending a service activation notification email using the 'gmail-node-mailer' package.
  *
- * @returns {Promise} - The result of the email sending operation.
+ * This function demonstrates how to send HTML formatted emails with predefined styles to notify users about service activation. 
+ *
+ * The function sends an email with a subject celebrating the user's service activation and includes basic contact information in the footer. It leverages the 'gmail-node-mailer' package to:
+ *   - Send HTML emails that incorporate style elements directly within the email body.
+ *   - Utilize special characters like emojis in the email subject line, demonstrating the package's handling of UTF-8 characters.
+ *
+ * Interface Structures:
+ *   - `ISendEmailParams`:
+ *     {
+ *       recipientEmail: string,
+ *       senderEmail?: string,  // Optional. Defaults to the email address initialized in the GmailMailer class if not provided.
+ *       subject?: string,  // Optional. Defaults to 'No Subject' if not provided.
+ *       message: string,
+ *       attachments?: IAttachment[]
+ *     }
+ *   - `ISendEmailResponse`:
+ *     {
+ *       sent: boolean,
+ *       status: number | null,
+ *       statusText: string | null,
+ *       responseUrl: string | null,
+ *       message: string,
+ *       gmailResponse: any | null
+ *     }
+ *
+ * This example illustrates the simplicity and effectiveness of communicating essential service information via the 'gmail-node-mailer' package.
+ *
+ * @returns {Promise<ISendEmailResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
 
-export async function sendHtmlEmail() {
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+
+export async function sendHtmlEmail() :Promise<ISendEmailResponse> {
     const recipientEmail = 'waleed@somnuslabs.com';
     const subject = '🎉 Welcome to Our Service!';
     const message = `
@@ -34,5 +62,5 @@ export async function sendHtmlEmail() {
         recipientEmail,
         message,
         subject,
-    });
+    } as ISendEmailParams) as ISendEmailResponse;
 }

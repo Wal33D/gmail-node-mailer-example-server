@@ -1,11 +1,39 @@
 /**
- * Sends a plain text email.
- * This function demonstrates sending a simple text email without HTML formatting.
- * It is ideal for straightforward, no-frills messages.
+ * Example: Sending a plain text email using the 'gmail-node-mailer' package.
  *
- * @returns {Promise} - The result of the email sending operation, whether it was successful or encountered an error.
+ * This function is specifically designed to send simple, plain text emails without HTML content. It's suitable for sending straightforward, text-based communications such as notifications, alerts, or basic welcome messages.
+ *
+ * This function utilizes the 'gmail-node-mailer' package to:
+ *   - Send plain text emails efficiently with minimal configuration.
+ *   - Ensure that the content is straightforward and easily readable without the need for HTML formatting.
+ *   - Provide a simple and direct method for sending text messages, making it ideal for applications that require non-complex email solutions.
+ *
+ * Interface Structures:
+ *   - `ISendEmailParams`:
+ *     {
+ *       recipientEmail: string,
+ *       message: string,
+ *       senderEmail?: string,  // Optional. Defaults to the email address initialized in the GmailMailer class if not provided.
+ *       subject?: string,  // Optional. Defaults to 'No Subject' if not provided.
+ *     }
+ *   - `ISendEmailResponse`:
+ *     {
+ *       sent: boolean,
+ *       status: number | null,
+ *       statusText: string | null,
+ *       responseUrl: string | null,
+ *       message: string,
+ *       gmailResponse: any | null
+ *     }
+ *
+ * The simplicity of this function makes it highly effective for quick communications where complex HTML emails are unnecessary.
+ *
+ * @returns {Promise<ISendEmailResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
-export async function sendPlainTextEmail() {
+
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+
+export async function sendPlainTextEmail(): Promise<ISendEmailResponse> {
     // Define the recipient's email address
     const recipientEmail = 'customer@glitchgaming.us'; 
     // Define the subject of the email
@@ -27,5 +55,5 @@ export async function sendPlainTextEmail() {
         recipientEmail,
         message,
         subject,
-    });
+    } as ISendEmailParams) as ISendEmailResponse;
 }

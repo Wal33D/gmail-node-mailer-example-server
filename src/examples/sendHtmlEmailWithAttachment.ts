@@ -1,12 +1,40 @@
 /**
- * Sends an HTML formatted email with a text attachment.
- * This function demonstrates how to attach files to emails, particularly how to send text file attachments.
- * It's configured to send a welcome notification for a service with an attached text file containing additional information.
+ * Example: Sending an HTML email with a text file attachment using the 'gmail-node-mailer' package.
  *
- * @returns {Promise} - The result of the email sending operation.
+ * This function is designed to send a welcome email to new subscribers of the StreamBox service. It showcases how to send emails with HTML content and a text file attachment. The HTML format enhances the visual appeal, while the attached text file provides additional information about the subscription benefits.
+ *
+ * The function demonstrates the 'gmail-node-mailer' capabilities, including:
+ *   - Creating HTML content for the body of the email, with styled components like headers and footers.
+ *   - Encoding text content into a base64 format and attaching it as a .txt file, demonstrating the package's handling of textual attachments.
+ *   - Sending emails with emoticons in the subject line, illustrating the package's support for unicode characters.
+ *
+ * Interface Structures:
+ *   - `ISendEmailParams`:
+ *     {
+ *       recipientEmail: string,
+ *       senderEmail?: string,  // Optional. Defaults to the email address initialized in the GmailMailer class if not provided.
+ *       subject?: string,  // Optional. Defaults to 'No Subject' if not provided.
+ *       message: string,
+ *       attachments?: IAttachment[]
+ *     }
+ *   - `ISendEmailResponse`:
+ *     {
+ *       sent: boolean,
+ *       status: number | null,
+ *       statusText: string | null,
+ *       responseUrl: string | null,
+ *       message: string,
+ *       gmailResponse: any | null
+ *     }
+ *
+ * This function provides a practical example of delivering customized and interactive communication to enhance user engagement and satisfaction right from the start of the subscription.
+ *
+ * @returns {Promise<ISendEmailResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
 
-export async function sendHtmlEmailWithAttachment() {
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+
+export async function sendHtmlEmailWithAttachment():Promise<ISendEmailResponse> {
     const recipientEmail = 'waleed@somnuslabs.com';
     const subject = '🎉 Welcome to StreamBox!';
     const message = `
@@ -45,5 +73,5 @@ export async function sendHtmlEmailWithAttachment() {
         message,
         subject,
         attachments: [attachment]
-    });
+    } as ISendEmailParams) as ISendEmailResponse;
 }
