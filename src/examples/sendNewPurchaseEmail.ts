@@ -1,22 +1,26 @@
 /**
  * Example: Sending a purchase confirmation email with the 'gmail-node-mailer' package.
  *
- * This function demonstrates the capability of the 'gmail-node-mailer' package to send an HTML formatted email in a Node.js environment, tailored for e-commerce applications. It includes several key functionalities:
- *   - Encoding subjects with emojis to enhance visual appeal and engagement.
- *   - Specifying an optional sender email address that differs from the default initialized in the GmailMailer class.
- *   - Sending multiple attachments, specifically a PDF invoice and an EPUB file of the purchased eBook.
- * The email provides customers with a direct download link for the eBook and a detailed invoice, facilitating immediate product access and transparent transaction details.
- * 
- * These features showcase advanced usage scenarios for email handling in software applications, highlighting the flexibility and power of the 'gmail-node-mailer' package.
+ * This function serves as a sample demonstration of how to use the 'gmail-node-mailer' package to send an HTML formatted email with multiple attachments in a Node.js environment. The example illustrates:
+ *   - Automatic encoding of email subjects, including the use of emojis to enhance customer engagement.
+ *   - Option to specify a sender email address different from the default, showcasing the package's flexibility in handling sender identities.
+ *   - Handling of multiple attachments with automatic MIME type recognition, simplifying the inclusion of diverse file types such as PDF invoices and EPUB eBooks.
+ * This function sends an email providing immediate access to an eBook via a direct download link, along with a detailed invoice, enhancing the customer's purchase experience by offering transparency and immediate product access.
  *
- * @returns {Promise<ISendEmailFunctionResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
+ * Interface Structures:
+ *   - `ISendEmailParams`: { recipientEmail: string, senderEmail?: string, subject?: string, message: string, attachments?: IAttachment[] }
+ *   - `ISendEmailResponse`: { sent: boolean, status: number | null, statusText: string | null, responseUrl: string | null, message: string, gmailResponse: any | null }
+ *
+ * This example highlights the 'gmail-node-mailer' package's capabilities for managing advanced email features effortlessly.
+ *
+ * @returns {Promise<ISendEmailResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
 
 import fs from 'fs';
 import util from 'util';
-import { ISendEmailParams, ISendEmailFunctionResponse } from 'gmail-node-mailer/dist/types'; 
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types'; 
 
-export async function sendNewPurchaseEmail(): Promise<ISendEmailFunctionResponse> {
+export async function sendNewPurchaseEmail(): Promise<ISendEmailResponse> {
     const senderEmail = 'no-reply@somnuslabs.com';
     const recipientEmail = 'waleed@somnuslabs.com';
     const subject = '📘 Your eBook Purchase Confirmation!';
@@ -84,5 +88,5 @@ export async function sendNewPurchaseEmail(): Promise<ISendEmailFunctionResponse
         message,
         subject,
         attachments
-    } as ISendEmailParams) as ISendEmailFunctionResponse;
+    } as ISendEmailParams) as ISendEmailResponse;
 }
