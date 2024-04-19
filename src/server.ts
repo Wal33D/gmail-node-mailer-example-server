@@ -2,15 +2,9 @@ require('dotenv-flow').config();
 
 import express from 'express';
 
+import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 import { initializeEmailClient } from './init/initializeEmailClient';
-import {
-    sendHtmlEmail,
-    sendPlainTextEmail,
-    sendNewPurchaseEmail,
-    sendServerStatusEmail,
-    sendHtmlEmailWithAttachment,
-    sendSubscriptionRenewalEmail
-} from './examples'; // Importing from examples index
+import * as examples from './examples'; // Importing from examples index
 
 
 declare global {
@@ -36,7 +30,7 @@ const PORT = process.env.DEFAULT_URL
     app.use('/files', express.static('dummyFiles'));
 
     // Send a notification email when the server starts
-    const serverStartResult = await sendServerStatusEmail('start');
+    const serverStartResult: ISendEmailResponse = await examples.sendServerStatusEmail('start');
     console.log('Server Start Email Send Result:', serverStartResult.sent);
 
     // Start the server on the specified port and log the initialization summary
@@ -48,7 +42,7 @@ const PORT = process.env.DEFAULT_URL
     // Setup graceful shutdown handling when receiving SIGINT (Ctrl+C)
     process.on('SIGINT', async () => {
         // Notify about server shutdown via email
-        const serverStartResult = await sendServerStatusEmail('shutdown');
+        const serverStartResult: ISendEmailResponse = await examples.sendServerStatusEmail('shutdown');
         console.log('Server Shutdown Email Send Result:', serverStartResult.sent);
 
         server.close(() => {
@@ -58,19 +52,19 @@ const PORT = process.env.DEFAULT_URL
     });
 
     // Demonstrate various email sending functionalities
-    const sendHTMLEmailResult = await sendHtmlEmail();
+    const sendHTMLEmailResult = await examples.sendHtmlEmail();
     console.log('Service Notification Email Send Result:', sendHTMLEmailResult.sent);
 
-    const plainTextEmailResult = await sendPlainTextEmail();
+    const plainTextEmailResult: ISendEmailResponse = await examples.sendPlainTextEmail();
     console.log('Plain Text Email Send Result:', plainTextEmailResult.sent);
 
-    const htmlEmailWithAttachmentResult = await sendHtmlEmailWithAttachment();
+    const htmlEmailWithAttachmentResult:ISendEmailResponse = await examples.sendHtmlEmailWithAttachment();
     console.log('HTML Email with Attachment Send Result:', htmlEmailWithAttachmentResult.sent);
 
-    const sendSubscriptionRenewalResult = await sendSubscriptionRenewalEmail();
+    const sendSubscriptionRenewalResult:ISendEmailResponse = await examples.sendSubscriptionRenewalEmail();
     console.log(`Send Subscription Renewal Email Result:`, sendSubscriptionRenewalResult.sent);
 
-    const sendNewPurchaseResult = await sendNewPurchaseEmail();
+    const sendNewPurchaseResult:ISendEmailResponse = await examples.sendNewPurchaseEmail();
     console.log(`Send New Purchase Email Result:`, sendNewPurchaseResult.sent);
 
 })();

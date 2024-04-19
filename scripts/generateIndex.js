@@ -4,9 +4,7 @@ const path = require('path');
 const directoryPath = path.join(__dirname, '../src/examples');
 const exportFileContents = [];
 
-// Start by defining a common function type for all example functions
-exportFileContents.push(`export type FunctionType = () => Promise<{ sent: boolean }>;`);
-
+// Read through the examples directory and export all TypeScript files except index.ts
 fs.readdir(directoryPath, (err, files) => {
     if (err) {
         console.error('Could not list the directory.', err);
@@ -20,5 +18,6 @@ fs.readdir(directoryPath, (err, files) => {
         }
     });
 
+    // Write the content to index.ts in the examples directory
     fs.writeFileSync(path.join(directoryPath, 'index.ts'), exportFileContents.join('\n'));
 });
