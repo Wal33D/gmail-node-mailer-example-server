@@ -1,0 +1,39 @@
+# System files
+.DS_Store
+
+# Node dependencies
+node_modules/
+
+# Build directories
+.build/
+/build
+
+# Coverage directories
+.coverage
+
+# Environment files
+.env
+.env.development.local
+.env.local
+.env.production.local
+.env.test.local
+
+# Package managers
+.npmrc
+package-lock.json
+pnp.js
+yarn-debug.log*
+yarn-error.log*
+
+# IDE settings
+**/.vs/**
+.vscode/*
+
+# .NET Build files
+**/Debug/**
+**/obj/**
+**/project-cache/**
+
+# Miscellaneous
+*.zip
+/private/*
