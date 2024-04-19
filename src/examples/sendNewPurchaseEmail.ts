@@ -1,15 +1,22 @@
 /**
- * Sends a purchase confirmation email for a new eBook purchase.
- * This function provides a detailed HTML message including a direct download link for the eBook and an attached PDF invoice.
- * It's tailored for e-commerce contexts where immediate product access and purchase details are crucial.
+ * Example: Sending a purchase confirmation email with the 'gmail-node-mailer' package.
  *
- * @returns {Promise} - The result of the email sending operation.
+ * This function demonstrates the capability of the 'gmail-node-mailer' package to send an HTML formatted email in a Node.js environment, tailored for e-commerce applications. It includes several key functionalities:
+ *   - Encoding subjects with emojis to enhance visual appeal and engagement.
+ *   - Specifying an optional sender email address that differs from the default initialized in the GmailMailer class.
+ *   - Sending multiple attachments, specifically a PDF invoice and an EPUB file of the purchased eBook.
+ * The email provides customers with a direct download link for the eBook and a detailed invoice, facilitating immediate product access and transparent transaction details.
+ * 
+ * These features showcase advanced usage scenarios for email handling in software applications, highlighting the flexibility and power of the 'gmail-node-mailer' package.
+ *
+ * @returns {Promise<ISendEmailFunctionResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
 
 import fs from 'fs';
 import util from 'util';
+import { ISendEmailParams, ISendEmailFunctionResponse } from 'gmail-node-mailer/dist/types'; 
 
-export async function sendNewPurchaseEmail() {
+export async function sendNewPurchaseEmail(): Promise<ISendEmailFunctionResponse> {
     const senderEmail = 'no-reply@somnuslabs.com';
     const recipientEmail = 'waleed@somnuslabs.com';
     const subject = '📘 Your eBook Purchase Confirmation!';
@@ -77,5 +84,5 @@ export async function sendNewPurchaseEmail() {
         message,
         subject,
         attachments
-    });
+    } as ISendEmailParams) as ISendEmailFunctionResponse;
 }
