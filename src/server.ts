@@ -96,24 +96,74 @@ initializeEmailClient().then(emailClientResult => {
             process.exit(0);
         });
     });
-});
-function getMenuHtml() {
+});function getMenuHtml() {
     return `
         <html>
             <head>
                 <title>Gmail-Node-Mailer Test Server</title>
                 <style>
-                    body { font-family: Arial, sans-serif; background-color: #f0f0f0; }
-                    h1 { color: #333; }
-                    ul { list-style: none; padding: 0; }
-                    li { margin-bottom: 10px; }
-                    button { padding: 10px 20px; cursor: pointer; background-color: #4CAF50; color: white; border: none; border-radius: 5px; }
-                    button:hover { background-color: #45a049; }
-                    #log { height: 300px; width: 100%; background: #fff; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
-                    table { width: 100%; border-collapse: collapse; }
-                    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                    #statusMessage { margin-top: 20px; }
+                    body {
+                        font-family: 'Lucida Console', Monaco, monospace;
+                        background-color: #333;
+                        color: #8CFF98;
+                        margin: 0;
+                        padding: 20px;
+                    }
+                    h1 {
+                        border-bottom: 2px solid #8CFF98;
+                    }
+                    ul {
+                        list-style: none;
+                        padding: 0;
+                    }
+                    li {
+                        margin-bottom: 10px;
+                    }
+                    button {
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        background-color: #4CAF50;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                    }
+                    button:hover {
+                        background-color: #45a049;
+                    }
+                    #log {
+                        height: 300px;
+                        width: 100%;
+                        background: #000;
+                        overflow-y: auto;
+                        border: 1px solid #666;
+                        padding: 10px;
+                        margin-top: 20px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        table-layout: fixed;  /* Ensures columns have consistent width */
+                    }
+                    th, td {
+                        border: 1px solid #666;
+                        padding: 8px;
+                        text-align: left;
+                        vertical-align: top;
+                        min-height: 50px;  /* Minimum height for each table row */
+                        overflow: hidden;  /* Keeps text within the cell */
+                    }
+                    th {
+                        background-color: #555;
+                    }
+                    tbody tr:nth-child(odd) {
+                        background-color: #222;
+                    }
+                    #statusMessage {
+                        margin-top: 20px;
+                        padding: 5px;
+                        background-color: #222;
+                        border: 1px solid #666;
+                    }
                 </style>
             </head>
             <body>
