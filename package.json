@@ -12,7 +12,7 @@
     "prebuild": "node scripts/generateIndex.js",
     "build": "tsc",
     "prestart": "node scripts/generateIndex.js",
-    "start": "node build/server.js",
+    "start": "yarn build && node build/server.js",
     "clean": "rimraf dist/* --glob",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
