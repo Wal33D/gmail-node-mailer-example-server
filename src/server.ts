@@ -33,7 +33,7 @@ require('dotenv-flow').config();
 import express from 'express';
 
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
-import { initializeEmailClient } from './init/initializeEmailClient';
+import { initializeEmailClient } from '/init/initializeEmailClient';
 import * as examples from './examples';
 
 declare global {

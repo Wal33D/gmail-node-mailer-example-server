@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const directoryPath = path.join(process.cwd(), 'src/examples');
 const exportFileContents = [];

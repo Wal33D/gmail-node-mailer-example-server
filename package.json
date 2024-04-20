@@ -2,18 +2,20 @@
   "type": "module",
   "name": "gmail-node-mailer-test-server",
   "version": "1.0.0",
-  "description": "This Express-based application demonstrates the 'gmail-node-mailer' package capabilities, serving as a practical showcase for integrating email functionalities into web applications. It features a variety of email types, including HTML emails, plain text emails, and emails with attachments, covering use cases like subscription renewals, purchase confirmations, and server status notifications. Ideal for developers seeking hands-on examples for email integration, the server provides a simulated environment to test and understand email operations in real-world application scenarios.",
+  "description": "gmail-node-mailer-test-server",
   "main": "src/server.js",
   "engines": {
     "node": "18.18.2"
   },
   "scripts": {
-    "predev": "node scripts/generateIndex.mjs",
-    "prebuild": "node scripts/generateIndex.mjs",
-    "prestart": "node scripts/generateIndex.mjs",
-    "dev": "nodemon --watch src --ext ts,json --exec \"ts-node src/server.ts\"",
-    "start": "tsc && node build/server.js",
-    "clean": "rimraf dist/* --glob"
+    "generate-index": "node -e \"const fs=require('fs');const path=require('path');const dir=path.join(process.cwd(),'src/examples');fs.readdir(dir,(err,files)=>{if(err){console.error(err);process.exit(1);}const exports=files.filter(f=>f.endsWith('.ts')&&f!=='index.ts').map(f=>`export * from './${f.replace(/\\.ts$/, '')}';`).join('\\n');fs.writeFileSync(path.join(dir,'index.ts'),exports);})\"",
+    "predev": "tsc && yarn generate-index",
+    "dev": "nodemon --watch src --ext ts,json --exec \"ts-node --loader ts-node/esm src/server.ts\"",
+    "prebuild": "yarn generate-index",
+    "build": "tsc",
+    "prestart": "yarn generate-index",
+    "start": "yarn build && node build/server.js",
+    "clean": "rimraf dist/*"
   },
   "author": "Wal33D",
   "license": "ISC",
