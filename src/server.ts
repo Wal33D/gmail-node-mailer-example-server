@@ -31,18 +31,18 @@
 
 require('dotenv-flow').config();
 
- import express from 'express';
- import opener from 'opener';
- import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
- 
- import { sendHtmlEmail } from './examples/sendHtmlEmail';
- import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
- import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
- import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
- import { initializeEmailClient } from './init/initializeEmailClient';
- import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
- import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
- 
+import express from 'express';
+import opener from 'opener';
+import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+
+import { sendHtmlEmail } from './examples/sendHtmlEmail';
+import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
+import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
+import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
+import { initializeEmailClient } from './init/initializeEmailClient';
+import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
+import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
+
 declare global {
     var gmailClient: any;
 }
@@ -81,18 +81,21 @@ initializeEmailClient().then((emailClientResult: { gmailClient: any; }) => {
 // Endpoint to simulate server start and stop notifications
 app.get('/simulate-server-status', async (req, res) => {
     console.log('[Demo] Simulating server start...');
-    const startEmailResult: ISendEmailResponse = await sendServerStatusEmail('start');
+    const startEmailResult = await sendServerStatusEmail('start');
     console.log('Server Start Email Send Result:', startEmailResult.sent);
 
-    console.log('[Demo] Simulating server shutdown...');
-    const stopEmailResult: ISendEmailResponse = await sendServerStatusEmail('shutdown');
-    console.log('Server Shutdown Email Send Result:', stopEmailResult.sent);
+    // Introduce a delay of 2 seconds before sending the stop email
+    setTimeout(async () => {
+        console.log('[Demo] Simulating server shutdown...');
+        const stopEmailResult = await sendServerStatusEmail('shutdown');
+        console.log('Server Shutdown Email Send Result:', stopEmailResult.sent);
 
-    // Sending both results back as an array of results
-    res.json([
-        { action: 'Server Start', ...startEmailResult },
-        { action: 'Server Shutdown', ...stopEmailResult }
-    ]);
+        // Sending both results back as an array of results
+        res.json([
+            { action: 'Server Start', ...startEmailResult },
+            { action: 'Server Shutdown', ...stopEmailResult }
+        ]);
+    }, 2000); // 2000 milliseconds delay
 });
 
 // Open browser window on server start

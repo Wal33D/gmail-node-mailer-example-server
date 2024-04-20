@@ -1,41 +1,36 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>gmail-node-mailer npm package Test Server</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
     <div class="container-fluid">
         <div class="row">
             <div id="menu" class="col-md-3">
-                <h1 class="branding">gmail-node-mailer npm package Test Server</h1>
+                <h1 class="branding">gmail-node-mailer npm package test server</h1>
+                <p>This server demonstrates the capabilities of the <strong>gmail-node-mailer</strong> package, which simplifies the process of sending emails via Gmail API in Node.js applications.</p>
                 <div class="link-info">
                     <span>🔗</span>
-                    <a href="https://github.com/our-node-packages/gmail-node-mailer" target="_blank">Package GitHub
-                        Repository</a>
+                    <a href="https://github.com/our-node-packages/gmail-node-mailer" target="_blank">GitHub Repository</a>
                 </div>
                 <div class="link-info">
                     <span>📦</span>
-                    <a href="https://www.npmjs.com/package/gmail-node-mailer" target="_blank">NPM Package </a>
+                    <a href="https://www.npmjs.com/package/gmail-node-mailer" target="_blank">npm Package</a>
                 </div>
                 <div class="link-info">
                     <span>👀</span>
-                    <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server"
-                        target="_blank">Example Server</a>
+                    <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server" target="_blank">Example Server</a>
                 </div>
-                <button onclick="makeRequest('/simulate-server-status')" class="btn btn-success">Simulate Server Status
-                    Emails</button>
+                <!-- Buttons for triggering different email actions -->
+                <button onclick="makeRequest('/simulate-server-status')" class="btn btn-success">Simulate Server Status Emails</button>
                 <button onclick="makeRequest('/send-html-email')" class="btn btn-success">Send HTML Email</button>
-                <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-success">Send Plain Text
-                    Email</button>
-                <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-success">Send HTML Email
-                    with Attachment</button>
-                <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-success">Send Subscription
-                    Renewal Email</button>
-                <button onclick="makeRequest('/send-new-purchase')" class="btn btn-success">Send New Purchase
-                    Email</button>
+                <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-success">Send Plain Text Email</button>
+                <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-success">Send HTML Email with Attachment</button>
+                <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-success">Send Subscription Renewal Email</button>
+                <button onclick="makeRequest('/send-new-purchase')" class="btn btn-success">Send New Purchase Email</button>
             </div>
             <div class="col-md-9">
                 <div id="statusMessage">Ready to send emails...</div>
@@ -60,40 +55,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        function makeRequest(url) {
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const log = document.querySelector('#log tbody');
-                    if (Array.isArray(data)) { // Check if the response is an array
-                        data.forEach(item => {
-                            appendRow(item, log);
-                        });
-                    } else {
-                        appendRow(data, log);
-                    }
-                    const statusMessage = document.getElementById('statusMessage');
-                    statusMessage.textContent = 'Latest activity updated below:';
-                })
-                .catch(err => {
-                    console.error('Request failed', err);
-                    const statusMessage = document.getElementById('statusMessage');
-                    statusMessage.textContent = 'Failed to update due to an error.';
-                });
-        }
-    
-        function appendRow(data, logElement) {
-            const row = document.createElement('tr');
-            row.innerHTML = '<td>' + (data.action || data.path) + '</td>' +
-                            '<td>' + data.sent + '</td>' +
-                            '<td>' + (data.status || 'N/A') + '</td>' +
-                            '<td>' + (data.statusText || 'No status text') + '</td>' +
-                            '<td>' + (data.message || 'No message provided') + '</td>';
-            logElement.appendChild(row);
-        }
-    </script>
-    
+    <script src="./script.js"></script>
 </body>
-
 </html>
