@@ -1,3 +1,40 @@
+/**
+ * Module: Test Server for Gmail-Node-Mailer
+ *
+ * This module initializes and runs an Express server to demonstrate the capabilities of the 'gmail-node-mailer' package by sending various types of emails.
+ *
+ * Features:
+ *  - Initialize the Gmail client globally and set up middleware for handling JSON and URL-encoded data.
+ *  - Serve static files located in the 'dummyFiles' directory.
+ *  - Automatically send an email notification when the server starts or is shut down using Ctrl+C.
+ *  - Demonstrate various email sending functionalities, including HTML emails, plain text emails, emails with attachments, and specific use-case emails like subscription renewals and new purchase confirmations.
+ *
+ * Global Variables:
+ *  - `gmailClient`: Instance of the GmailMailer, initialized and used across the server for sending emails.
+ *
+ * Environment Variables:
+ *  - `DEFAULT_URL`: Determines the port number on which the server listens. If not set, defaults to 6338.
+ *
+ * Endpoints:
+ *  - `/files`: Serves static content from the 'dummyFiles' directory.
+ *
+ * Email Sending Examples Demonstrated:
+ *  - sendServerStatusEmail: Sends a notification on server start or shutdown.
+ *  - sendHtmlEmail: Sends a stylized HTML email for service notifications.
+ *  - sendPlainTextEmail: Sends a simple text-based email.
+ *  - sendHtmlEmailWithAttachment: Sends an HTML email with file attachments.
+ *  - sendSubscriptionRenewalEmail: Sends a detailed HTML email for subscription renewal.
+ *  - sendNewPurchaseEmail: Sends a confirmation email for new purchases.
+ *
+ * Usage:
+ *  - The server can be started by running this file. Email sending functions are called within the server lifecycle hooks and upon specific endpoint hits.
+ *
+ * Shutdown Handling:
+ *  - Graceful shutdown is implemented to send a shutdown email notification and properly close the server on receiving SIGINT.
+ *
+ * @returns {void} The server runs indefinitely until manually stopped, handling incoming requests and sending emails based on predefined triggers.
+ */
+
 require('dotenv-flow').config();
 
 import express from 'express';

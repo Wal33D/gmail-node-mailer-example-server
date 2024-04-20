@@ -34,10 +34,13 @@
 
 import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
-export async function sendHtmlEmailWithAttachment():Promise<ISendEmailResponse> {
+export async function sendHtmlEmailWithAttachment(): Promise<ISendEmailResponse> {
+    // Define the recipient's email address to whom the welcome email will be sent.
     const recipientEmail = 'waleed@somnuslabs.com';
+    // Subject of the email, including an emoji; automatically encoded to Base64.
     const subject = '🎉 Welcome to StreamBox!';
-    const message = `
+    // Define the HTML message to be sent, which includes formatting specific to HTML content.
+    const message = `;
     <!DOCTYPE html>
     <html>
     <head>

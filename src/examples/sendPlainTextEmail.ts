@@ -38,7 +38,7 @@ export async function sendPlainTextEmail(): Promise<ISendEmailResponse> {
     const recipientEmail = 'customer@glitchgaming.us'; 
     // Optionally define the subject with emojis or special characters; automatically encoded to Base64. Defaults to 'No Subject' if not provided.
     const subject = 'Plain Text Email Demo: Welcome Aboard!';
-    // Define the plain text message to be sent, containing simple and direct content for easy reading.
+    // Define the plain text message to be sent.
     const message = `
     Hi there!
 
