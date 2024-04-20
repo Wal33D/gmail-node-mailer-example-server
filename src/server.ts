@@ -30,8 +30,8 @@
  */
 require('dotenv-flow').config();
 
-import opener from 'opener';
 import express from 'express';
+import opener from 'opener';
 
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
@@ -44,7 +44,7 @@ import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachm
 import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
 
 declare global {
-    var gmailClient: any; // Declare the global variable for Gmail client
+    var gmailClient: any;
 }
 
 const PORT = process.env.DEFAULT_URL ? parseInt(process.env.DEFAULT_URL.split(':').pop() as string) || 6338 : 6338;
@@ -53,22 +53,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/files', express.static('dummyFiles'));
 
-function setupEmailEndpoint(path:any, emailFunction:any) {
+function setupEmailEndpoint(path: any, emailFunction: any) {
     app.get(path, async (req, res) => {
         const result: ISendEmailResponse = await emailFunction();
-        res.send(`${path} Email Sent: ${result.sent}`);
+        res.json({
+            path: path.replace('/', '').replace(/-/g, ' ').toUpperCase(),
+            sent: result.sent,
+            status: result.status || 'N/A',
+            statusText: result.statusText || 'No status text',
+            message: result.message || 'No message provided'
+        });
     });
 }
-// Menu for triggering email functions and simulating server status notifications
+
 app.get('/', (req, res) => {
     res.send(getMenuHtml());
 });
 
-// Initialize the Gmail client
 initializeEmailClient().then(emailClientResult => {
     global.gmailClient = emailClientResult.gmailClient;
 
-    // Define endpoints for each email function
     setupEmailEndpoint('/simulate-server-status', () => sendServerStatusEmail('start'));
     setupEmailEndpoint('/send-html-email', sendHtmlEmail);
     setupEmailEndpoint('/send-plain-text-email', sendPlainTextEmail);
@@ -76,18 +80,15 @@ initializeEmailClient().then(emailClientResult => {
     setupEmailEndpoint('/send-subscription-renewal', sendSubscriptionRenewalEmail);
     setupEmailEndpoint('/send-new-purchase', sendNewPurchaseEmail);
 
-    // Start the server and open a browser window
     const server = app.listen(PORT, async () => {
-        console.log('[Gmail-Node-Mailer Test Server] - Server is listening on port:', PORT);
+        console.log(`[Gmail-Node-Mailer Test Server] - Server is listening on port: ${PORT}`);
         try {
             await opener(`http://localhost:${PORT}`);
-
         } catch (error) {
             console.error('Failed to open browser:', error);
         }
     });
 
-    // Handle SIGINT for graceful shutdown
     process.on('SIGINT', () => {
         console.log('Server is shutting down...');
         server.close(() => {
@@ -96,23 +97,28 @@ initializeEmailClient().then(emailClientResult => {
         });
     });
 });
-
-function getMenuHtml(responseMessage = '') {
+function getMenuHtml() {
     return `
         <html>
             <head>
                 <title>Gmail-Node-Mailer Test Server</title>
                 <style>
-                    body { font-family: Arial, sans-serif; }
+                    body { font-family: Arial, sans-serif; background-color: #f0f0f0; }
                     h1 { color: #333; }
                     ul { list-style: none; padding: 0; }
                     li { margin-bottom: 10px; }
-                    button { padding: 10px 20px; cursor: pointer; }
+                    button { padding: 10px 20px; cursor: pointer; background-color: #4CAF50; color: white; border: none; border-radius: 5px; }
+                    button:hover { background-color: #45a049; }
+                    #log { height: 300px; width: 100%; background: #fff; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                    #statusMessage { margin-top: 20px; }
                 </style>
             </head>
             <body>
                 <h1>Gmail-Node-Mailer Test Server</h1>
-                <p>${responseMessage}</p>
+                <div id="statusMessage">Ready to send emails...</div>
                 <ul>
                     <li><button onclick="makeRequest('/simulate-server-status')">Simulate Server Status Emails</button></li>
                     <li><button onclick="makeRequest('/send-html-email')">Send HTML Email</button></li>
@@ -121,16 +127,41 @@ function getMenuHtml(responseMessage = '') {
                     <li><button onclick="makeRequest('/send-subscription-renewal')">Send Subscription Renewal Email</button></li>
                     <li><button onclick="makeRequest('/send-new-purchase')">Send New Purchase Email</button></li>
                 </ul>
+                <table id="log">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Sent</th>
+                            <th>Status</th>
+                            <th>Status Text</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
                 <script>
                     function makeRequest(url) {
                         fetch(url)
-                            .then(response => response.text())
-                            .then(html => {
-                                const parser = new DOMParser();
-                                const doc = parser.parseFromString(html, 'text/html');
-                                document.querySelector('p').innerText = doc.querySelector('p').innerText;
-                            })
-                            .catch(err => console.error('Request failed', err));
+                            .then(response => response.json())
+                            .then(data => {
+                            const log = document.querySelector('#log tbody');
+                            const row = document.createElement('tr');
+                            row.innerHTML = '<td>' + data.path + '</td>' +
+                                            '<td>' + data.sent + '</td>' +
+                                            '<td>' + (data.status || 'N/A') + '</td>' +
+                                            '<td>' + (data.statusText || 'No status text') + '</td>' +
+                                            '<td>' + (data.message || 'No message provided') + '</td>';
+                            log.appendChild(row);
+                            // Update status message
+                            const statusMessage = document.getElementById('statusMessage');
+                            statusMessage.textContent = 'Latest activity updated below:';
+                        })
+                        .catch(err => {
+                            console.error('Request failed', err);
+                            const statusMessage = document.getElementById('statusMessage');
+                            statusMessage.textContent = 'Failed to update due to an error.';
+                        });
                     }
                 </script>
             </body>
