@@ -80,8 +80,19 @@ const PORT = process.env.DEFAULT_URL
     });
 
     // Demonstrates sending various types of emails using the 'gmail-node-mailer' package
-    const sendHTMLEmailResult:ISendEmailResponse = await examples.sendHtmlEmail();
-    console.log('Service Notification Email Send Result:', sendHTMLEmailResult);
+    const sendHTMLEmailResult: ISendEmailResponse = await examples.sendHtmlEmail();
+    console.log('Service Notification Email Send Result:', { sent: sendHTMLEmailResult.sent, status: sendHTMLEmailResult.status, message: sendHTMLEmailResult.message });
 
+    const plainTextEmailResult: ISendEmailResponse = await examples.sendPlainTextEmail();
+    console.log('Plain Text Email Send Result:', { sent: plainTextEmailResult.sent, status: plainTextEmailResult.status, message: plainTextEmailResult.message });
+
+    const htmlEmailWithAttachmentResult: ISendEmailResponse = await examples.sendHtmlEmailWithAttachment();
+    console.log('HTML Email with Attachment Send Result:', { sent: htmlEmailWithAttachmentResult.sent, status: htmlEmailWithAttachmentResult.status, message: htmlEmailWithAttachmentResult.message });
+
+    const sendSubscriptionRenewalResult: ISendEmailResponse = await examples.sendSubscriptionRenewalEmail();
+    console.log(`Send Subscription Renewal Email Result:`, { sent: sendSubscriptionRenewalResult.sent, status: sendSubscriptionRenewalResult.status, message: sendSubscriptionRenewalResult.message });
+
+    const sendNewPurchaseResult: ISendEmailResponse = await examples.sendNewPurchaseEmail();
+    console.log(`Send New Purchase Email Result:`, { sent: sendNewPurchaseResult.sent, status: sendNewPurchaseResult.status, message: sendNewPurchaseResult.message });
 
 })();
