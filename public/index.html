@@ -7,33 +7,44 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <div class="container-fluid">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">gmail-node-mailer Demo Server</span>
+        </div>
+    </nav>
+    <div class="container-fluid mt-3">
         <div class="row">
             <div id="menu" class="col-md-3">
-                <h1 class="branding">gmail-node-mailer npm package test server</h1>
-                <p>This server is currently running live demonstrations of the <strong>gmail-node-mailer</strong> package, simplifying email sending via Gmail API in Node.js applications.</p>
-                <p>This particular server instance is part of the examples provided in the <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server" target="_blank">Example Server GitHub repository</a>, designed to show practical implementations of the package features.</p>
-                <div class="link-info">
-                    <span>🔗</span>
-                    <a href="https://github.com/our-node-packages/gmail-node-mailer" target="_blank">GitHub Repository</a>
+                <!-- Separate section for operational buttons -->
+                <div class="email-actions mb-3">
+                    <button onclick="makeRequest('/simulate-server-status')" class="btn btn-success">Simulate Server Status Emails</button>
+                    <button onclick="makeRequest('/send-html-email')" class="btn btn-success">Send HTML Email</button>
+                    <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-success">Send Plain Text Email</button>
+                    <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-success">Send HTML Email with Attachment</button>
+                    <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-success">Send Subscription Renewal Email</button>
+                    <button onclick="makeRequest('/send-new-purchase')" class="btn btn-success">Send New Purchase Email</button>
                 </div>
+                
+                <!-- Links and informational section -->
                 <div class="link-info">
-                    <span>📦</span>
-                    <a href="https://www.npmjs.com/package/gmail-node-mailer" target="_blank">npm Package</a>
-                    <p>Explore the package on npm for detailed documentation and installation instructions.</p>
+                    <h3>Resources</h3>
+                    <div>
+                        <span>🔗</span>
+                        <a href="https://github.com/our-node-packages/gmail-node-mailer" target="_blank">GitHub Repository</a>
+                    </div>
+                    <div>
+                        <span>📦</span>
+                        <a href="https://www.npmjs.com/package/gmail-node-mailer" target="_blank">npm Package</a>
+                    </div>
+                    <div>
+                        <span>👀</span>
+                        <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server" target="_blank">Example Server</a>
+                    </div>
                 </div>
-                <div class="link-info">
-                    <span>👀</span>
-                    <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server" target="_blank">Example Server</a>
-                    <p>View the source code and configuration of this example server on GitHub.</p>
+                <div class="note">
+                    <p>This server demonstrates the capabilities of the <strong>gmail-node-mailer</strong> package, which simplifies the process of sending emails via Gmail API in Node.js applications.</p>
+                    <p>This particular server instance is part of the examples provided in the <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server" target="_blank">Example Server GitHub repository</a>.</p>
                 </div>
-                <!-- Buttons for triggering different email actions -->
-                <button onclick="makeRequest('/simulate-server-status')" class="btn btn-success">Simulate Server Status Emails</button>
-                <button onclick="makeRequest('/send-html-email')" class="btn btn-success">Send HTML Email</button>
-                <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-success">Send Plain Text Email</button>
-                <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-success">Send HTML Email with Attachment</button>
-                <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-success">Send Subscription Renewal Email</button>
-                <button onclick="makeRequest('/send-new-purchase')" class="btn btn-success">Send New Purchase Email</button>
             </div>
             <div class="col-md-9">
                 <div id="statusMessage">Ready to send emails...</div>

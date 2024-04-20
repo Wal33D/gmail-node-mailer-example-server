@@ -23,6 +23,7 @@ body {
     padding: 20px;
     background: #222;
     min-height: 100vh;
+    
 }
 
 #menu button {
@@ -62,7 +63,6 @@ tr:nth-child(odd) {
     padding: 5px;
     background-color: #222;
     border: 1px solid #666;
-    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -72,6 +72,7 @@ tr:nth-child(odd) {
     color: #8CFF98;
     margin: 10px 0;
     font-size: 0.8em;
+
 }
 
 .info a {
@@ -81,4 +82,18 @@ tr:nth-child(odd) {
 
 .info a:hover {
     text-decoration: underline;
+}
+.link-info{
+    border-bottom: 2px solid #8CFF98;
+padding:5px;
+
+}
+.email-actions{
+    padding:5px;
+}
+.note{
+    padding:10px;
+}
+.navbar-dark{
+    background: #222 !important;
 }
