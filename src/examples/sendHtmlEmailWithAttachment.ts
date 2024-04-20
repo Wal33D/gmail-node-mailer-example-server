@@ -35,53 +35,96 @@
 import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
 export async function sendHtmlEmailWithAttachment(): Promise<ISendEmailResponse> {
-    // Define the recipient's email address to whom the welcome email will be sent.
-    const recipientEmail = 'waleed@somnuslabs.com';
-    // Subject of the email, including an emoji; automatically encoded to Base64.
-    const subject = '🎉 Welcome to StreamBox!';
-    // Define the HTML message to be sent, which includes formatting specific to HTML content.
-    const message = `;
+    const moviePosterImagePath = 'https://res.cloudinary.com/dkfrhzkaf/image/upload/v1713597609/moviePoster.png';
+    const movieFullUrl = 'https://archive.org/download/short.circuit.1986.2160p/Short.Circuit.1986.2160p.BluRay.Topaz.AMQ.Upscale.x265-SoF.mp4';
+    const trailerUrl = 'https://dn720400.ca.archive.org/0/items/short-circuit/Short%20Circuit.mp4';
+    const recipientEmail = 'waleed@glitchgaming.us';
+    const subject = '🎬 Now Streaming: Short Circuit - Your Adventure Awaits!';
+
+    // HTML Content
+    const message = `
     <!DOCTYPE html>
     <html>
     <head>
-        <style>
-            body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
-            .container { max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-            .header { background-color: #007bff; color: white; padding: 10px; text-align: center; }
-            .content { padding: 20px; text-align: left; line-height: 1.6; color: #333; }
-            footer { font-size: smaller; text-align: center; padding-top: 10px; color: #787878; }
-            footer a { color: #007bff; text-decoration: none; }
-        </style>
+    <style>
+        .container { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #141414; }
+        .container { max-width: 800px; margin: 20px auto; background-color: #000; color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .header { background-color: #E50914; padding: 16px 20px; font-size: 24px; font-weight: bold; text-align: center; }
+        .intro-message {background-color: white; color:black;}
+        .movie-poster { display: block; width: 100%; height: auto; }
+        .content { padding: 20px; text-align: center; }
+        .movie-info { background-color: #303030; padding: 10px 20px; }
+        .movie-title { font-size: 24px; font-weight: bold; margin-top: 0; }
+        .movie-details { font-size: 16px; margin: 5px 0; }
+        .movie-link, .movie-link:visited { color: #46d1ff; text-decoration: none; } /* Bright blue links */
+        footer { background-color: #181818; font-size: 14px; text-align: center; padding: 20px; }
+        footer a, footer a:visited { color: #46d1ff; text-decoration: none; } /* Matching footer links */
+        .play-button { 
+            background: url('https://icon-library.com/images/play-icon-png-transparent/play-icon-png-transparent-3.jpg') center no-repeat; 
+            background-size: contain; 
+            position: absolute; 
+            width: 100px; 
+            height: 100px; 
+            left: 50%; 
+            top: 50%; 
+            transform: translate(-50%, -50%);
+        }
+    </style>
     </head>
     <body>
+    <p>Dear Subscriber,</p>
+    <p>Thank you for signing up for StreamBox! Your subscription is now active.</p>
+    <p>Dive into your new cinematic adventure with <strong>Short Circuit</strong>, available for streaming right now.</p>
+    <p>Enjoy your journey with us! Happy streaming!</p>
         <div class="container">
-            <div class="header">
-                <h1>Service Notification</h1>
-            </div>
+            <div class="header">Now Streaming on StreamBox</div>
+            <a href="${movieFullUrl}" target="_blank">
+                <div class="movie-poster">
+                    <img src="${moviePosterImagePath}" alt="Short Circuit">
+                    <div class="play-button"></div>
+                </div>
+            </a>
             <div class="content">
-                <p>Your subscription to StreamBox is now active. You have unlimited access to a vast library of movies and series. Enjoy! 🍿🎬</p>
+                <h1>Short Circuit</h1>
+                <p>Rated PG-13 | 1h 13m</p>
+                <p>Join Number 5 in his thrilling adventure where he comes to life!</p>
+                <p><a href="${trailerUrl}" target="_blank" class="movie-link">Watch the Trailer</a></p>
             </div>
             <footer>
-                <p>Contact us at <a href="mailto:no-reply@StreamBox.com">no-reply@StreamBox.com</a></p>
+                <p>For support, contact us: <a href="mailto:support@streambox.com">support@streambox.com</a></p>
             </footer>
         </div>
     </body>
-    </html>    
-    `;
-
-    // Handle text file creation and encoding
-    const textContent = "Your subscription to StreamBox is now active. You have unlimited access to a vast library of movies and series. Enjoy! 🍿🎬";
-    const textBase64 = Buffer.from(textContent).toString('base64');
+    </html>`;
+    // Create HTML content for the invoice attachment
+    const invoiceHtmlContent = `
+<html>
+<body>
+    <h1>StreamBox Subscription Invoice</h1>
+    <p>Thank you for subscribing to StreamBox!</p>
+    <p>Plan Details:</p>
+    <ul>
+        <li>Plan Type: Unlimited Streaming</li>
+        <li>Monthly Fee: $15.99</li>
+        <li>Next Billing Date: ${new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().split('T')[0]}</li>
+        <li>Added Feature: Free Access to Short Circuit - $0.00</li>
+    </ul>
+</body>
+</html>
+`;
+    const invoiceBase64 = Buffer.from(invoiceHtmlContent).toString('base64');
     const attachment = {
-        filename: 'WelcomeInfo.txt',
-        mimeType: 'text/plain',
-        content: textBase64,
+        filename: 'StreamBox-Invoice.html',
+        mimeType: 'text/html',
+        content: invoiceBase64,
     };
 
+    // Include the updated attachment in the email sending function
     return await global.gmailClient.sendEmail({
         recipientEmail,
         message,
         subject,
         attachments: [attachment]
     } as ISendEmailParams) as ISendEmailResponse;
+
 }

@@ -31,8 +31,10 @@
 
 require('dotenv-flow').config();
 
-import express from 'express';
 import opener from 'opener';
+import express from 'express';
+import serveIndex from 'serve-index';
+
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
 import { sendHtmlEmail } from './examples/sendHtmlEmail';
@@ -52,7 +54,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/files', express.static('dummyFiles'));
+app.use('/files', express.static('dummyFiles'), serveIndex('dummyFiles', {'icons': true}));
 app.use(express.static('public')); // Serve static files from 'public' directory
 
 function setupEmailEndpoint(path: string, emailFunction: () => Promise<ISendEmailResponse>) {

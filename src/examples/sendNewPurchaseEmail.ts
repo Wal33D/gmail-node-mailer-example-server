@@ -39,7 +39,7 @@ export async function sendNewPurchaseEmail(): Promise<ISendEmailResponse> {
     // Optional sender email address; default from initialization will be used if this is not specified.
     const senderEmail = 'no-reply@somnuslabs.com';
     // Define the recipient's email address to whom the email will be sent.
-    const recipientEmail = 'customer@glitchgaming.us';
+    const recipientEmail = 'waleed@glitchgaming.us';
     // Optionally define the subject with emojis or special characters; automatically encoded to Base64. Defaults to 'No Subject' if not provided.
     const subject = '📘 Your eBook Purchase Confirmation!';
     // Define Recipient name set to a generic 'Customer Name' for example purposes.

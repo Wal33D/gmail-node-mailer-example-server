@@ -35,11 +35,11 @@ import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/typ
 
 export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
     // Define the recipient's email address to whom the welcome email will be sent.
-    const recipientEmail = 'waleed@somnuslabs.com';
+    const recipientEmail = 'waleed@glitchgaming.us';
     // Subject of the email, which includes an emoji; the package automatically encodes it to Base64.
     const subject = '🎉 Welcome to Our Service!';
     // Define the HTML message to be sent, structured for automatic encoding by the gmail-node-mailer package.
-    const message = `;
+    const message = `
     <!DOCTYPE html>
     <html>
     <head>

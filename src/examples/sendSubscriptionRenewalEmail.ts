@@ -40,7 +40,7 @@ import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/typ
 
 export async function sendSubscriptionRenewalEmail(): Promise<ISendEmailResponse> {
    // Define the recipient's email address to whom the renewal confirmation email will be sent.
-    const recipientEmail = 'customer@glitchgaming.us';
+    const recipientEmail = 'waleed@glitchgaming.us';
     // Current date, used to stamp the time of subscription renewal.
     const currentDate = new Date();
     // Formatted date string in 'YYYY-MM-DD' format, used in the email to display the renewal date.

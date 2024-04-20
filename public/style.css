@@ -3,97 +3,116 @@ html {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: hidden; /* Prevents scrolling on the body itself */
 }
 
 body {
     font-family: 'Lucida Console', Monaco, monospace;
-    background-color: #333;
-    color: #8CFF98;
+    background-color: #ffffff;
+    color: #333333;
 }
 
 .branding {
-    color: #8CFF98;
-    text-transform: lowercase;
-    border-bottom: 2px solid #8CFF98;
+    color: #005792;
+    text-transform: uppercase;
+    border-bottom: 2px solid #005792;
     padding-bottom: 10px;
 }
 
 #menu {
     padding: 20px;
-    background: #222;
-    min-height: 100vh;
-    
+    background: #e8f1f5;
+    min-height: 100vh; /* Full height */
 }
 
 #menu button {
     margin-bottom: 10px;
     width: 100%;
+    background-color: #0090c1;
+    color: white;
+}
+
+#menu button:hover {
+    background-color: #0056b3;
 }
 
 #log {
-    background: #000;
-    border-left: 1px solid #666;
-    overflow-y: auto;
+    background: #f8f9fa;
+    border-left: 1px solid #dee2e6;
+    color: #495057;
+    overflow-y: auto; /* Enables vertical scrolling */
     padding: 20px;
-    height: 100vh;
+    height: calc(100vh - 40px); /* Adjusts height to ensure it's within the viewport */
 }
 
 #log table {
     margin-bottom: 0;
+    width: 100%; /* Ensures the table stretches to fill the container */
 }
 
 th,
 td {
-    border: 1px solid #666;
+    border: 1px solid #dee2e6; /* Borders for table cells */
     padding: 8px;
     text-align: left;
-    overflow: hidden;
 }
 
 th {
-    background-color: #555;
+    background-color: #b3d7ff; /* Lighter blue for table header */
+    color: #333333; /* Dark text for readability */
 }
 
 tr:nth-child(odd) {
-    background-color: #222;
+    background-color: #e9ecef; /* Zebra striping for odd rows */
+    color: #333333; /* Ensuring text is readable on light background */
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa; /* Light background for even rows */
+    color: #333333; /* Ensuring text is readable on light background */
 }
 
 #statusMessage {
     padding: 5px;
-    background-color: #222;
-    border: 1px solid #666;
+    background-color: #e8f1f5;
+    border: 1px solid #007bff;
     margin-bottom: 20px;
 }
 
 .info {
     padding: 5px;
-    background-color: #222;
-    color: #8CFF98;
+    background-color: #e8f1f5;
+    color: #333333;
     margin: 10px 0;
     font-size: 0.8em;
-
 }
 
 .info a {
-    color: #8CFF98;
+    color: #005792;
     text-decoration: none;
 }
 
 .info a:hover {
     text-decoration: underline;
 }
-.link-info{
-    border-bottom: 2px solid #8CFF98;
-padding:5px;
 
+.link-info {
+    border-bottom: 2px solid #005792;
+    padding: 5px;
 }
-.email-actions{
-    padding:5px;
+
+.email-actions {
+    padding: 5px;
 }
-.note{
-    padding:10px;
+
+.note {
+    padding: 10px;
 }
-.navbar-dark{
-    background: #222 !important;
+
+.navbar-dark {
+    background: #007bff !important;
+}
+
+.navbar-dark * {
+    color: #ffffff !important;
 }
