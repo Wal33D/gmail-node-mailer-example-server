@@ -101,7 +101,7 @@ function getMenuHtml() {
     return `
         <html>
             <head>
-                <title>Gmail-Node-Mailer Test Server</title>
+                <title>gmail-node-mailer npm package Test Server</title>
                 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
                 <style>
                     body {
@@ -109,11 +109,16 @@ function getMenuHtml() {
                         background-color: #333;
                         color: #8CFF98;
                     }
-                    h1 {
+                    .branding {
+                        color: #8CFF98;
+                        text-transform: lowercase;
                         border-bottom: 2px solid #8CFF98;
+                        padding-bottom: 10px;
                     }
                     #menu {
-                        padding-right: 20px;
+                        padding: 20px;
+                        background: #222;
+                        min-height: 100vh;
                     }
                     #menu button {
                         margin-bottom: 10px;
@@ -121,13 +126,17 @@ function getMenuHtml() {
                     }
                     #log {
                         background: #000;
-                        border: 1px solid #666;
+                        border-left: 1px solid #666;
+                        overflow-y: auto;
+                        padding: 20px;
+                        height: 100vh;
                     }
                     #log table {
                         margin-bottom: 0;
                     }
                     th, td {
                         border: 1px solid #666;
+                        padding: 8px;
                         text-align: left;
                         overflow: hidden;
                     }
@@ -143,14 +152,39 @@ function getMenuHtml() {
                         border: 1px solid #666;
                         margin-bottom: 20px;
                     }
+                    .info {
+                        padding: 5px;
+                        background-color: #222;
+                        color: #8CFF98;
+                        margin: 10px 0;
+                        font-size: 0.8em;
+                    }
+                    .info a {
+                        color: #8CFF98;
+                        text-decoration: none;
+                    }
+                    .info a:hover {
+                        text-decoration: underline;
+                    }
                 </style>
             </head>
             <body>
                 <div class="container-fluid">
-                    <h1>Gmail-Node-Mailer Test Server</h1>
-                    <div id="statusMessage">Ready to send emails...</div>
                     <div class="row">
-                        <div id="menu" class="col-md-4">
+                            <div id="menu" class="col-md-3">
+                            <h1 class="branding">gmail-node-mailer npm package Test Server</h1>
+                            <div class="link-info">
+                                <span>🔗</span>
+                                <a href="https://github.com/our-node-packages/gmail-node-mailer" target="_blank">Package GitHub Repository</a>
+                            </div>
+                            <div class="link-info">
+                                <span>📦</span>
+                                <a href="https://www.npmjs.com/package/gmail-node-mailer" target="_blank">NPM Package</a>
+                            </div>
+                            <div class="link-info">
+                                <span>👀</span>
+                                <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server" target="_blank">Example Server</a>
+                            </div>
                             <button onclick="makeRequest('/simulate-server-status')" class="btn btn-success">Simulate Server Status Emails</button>
                             <button onclick="makeRequest('/send-html-email')" class="btn btn-success">Send HTML Email</button>
                             <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-success">Send Plain Text Email</button>
@@ -158,8 +192,9 @@ function getMenuHtml() {
                             <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-success">Send Subscription Renewal Email</button>
                             <button onclick="makeRequest('/send-new-purchase')" class="btn btn-success">Send New Purchase Email</button>
                         </div>
-                        <div class="col-md-8">
-                            <div id="log" class="overflow-auto">
+                        <div class="col-md-9">
+                            <div id="statusMessage">Ready to send emails...</div>
+                            <div id="log">
                                 <table class="table table-dark table-bordered">
                                     <thead>
                                         <tr>
