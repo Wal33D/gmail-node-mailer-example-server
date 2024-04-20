@@ -5,8 +5,7 @@
 node_modules/
 
 # Build directories
-.build/
-/build
+/build/*
 
 # Coverage directories
 .coverage
