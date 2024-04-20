@@ -111,7 +111,7 @@ initializeEmailClient().then(emailClientResult => {
     const server = app.listen(PORT, async () => {
         console.log('[Gmail-Node-Mailer Test Server] - Server is listening on port:', PORT);
         try {
-            const open = (await import('open')).default; 
+            const open = (await import('open')).default;
             await open(`http://localhost:${PORT}`);
         } catch (error) {
             console.error('Failed to open browser:', error);
