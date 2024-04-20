@@ -28,13 +28,8 @@
  *    # Optional - you can use the path or a json object
  *    # GMAIL_MAILER_SERVICE_ACCOUNT={"type":"service_account","project_id":"...","private_key_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n","client_email":"....iam.gserviceaccount.com","client_id":"...","auth_uri":"...","token_uri":"...","auth_provider_x509_cert_url":"...","client_x509_cert_url":"..."}
  */
-require('dotenv-flow').config();
-
 import express from 'express';
-import opener from 'opener';
-
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
-
 import { sendHtmlEmail } from './examples/sendHtmlEmail';
 import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
 import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
@@ -42,6 +37,9 @@ import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
 import { initializeEmailClient } from './init/initializeEmailClient';
 import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
 import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
+import opener from 'opener';
+
+require('dotenv-flow').config();
 
 declare global {
     var gmailClient: any;
@@ -52,8 +50,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/files', express.static('dummyFiles'));
+app.use(express.static('public')); // Serve static files from 'public' directory
 
-function setupEmailEndpoint(path: any, emailFunction: any) {
+function setupEmailEndpoint(path: string, emailFunction: () => Promise<ISendEmailResponse>) {
     app.get(path, async (req, res) => {
         const result: ISendEmailResponse = await emailFunction();
         res.json({
@@ -66,10 +65,7 @@ function setupEmailEndpoint(path: any, emailFunction: any) {
     });
 }
 
-app.get('/', (req, res) => {
-    res.send(getMenuHtml());
-});
-
+// Setup email endpoints
 initializeEmailClient().then(emailClientResult => {
     global.gmailClient = emailClientResult.gmailClient;
 
@@ -79,166 +75,21 @@ initializeEmailClient().then(emailClientResult => {
     setupEmailEndpoint('/send-html-email-attachment', sendHtmlEmailWithAttachment);
     setupEmailEndpoint('/send-subscription-renewal', sendSubscriptionRenewalEmail);
     setupEmailEndpoint('/send-new-purchase', sendNewPurchaseEmail);
+});
 
-    const server = app.listen(PORT, async () => {
-        console.log(`[Gmail-Node-Mailer Test Server] - Server is listening on port: ${PORT}`);
-        try {
-            await opener(`http://localhost:${PORT}`);
-        } catch (error) {
-            console.error('Failed to open browser:', error);
-        }
-    });
+const server = app.listen(PORT, async () => {
+    console.log(`[Gmail-Node-Mailer Test Server] - Server is listening on port: ${PORT}`);
+    try {
+        await opener(`http://localhost:${PORT}`);
+    } catch (error) {
+        console.error('Failed to open browser:', error);
+    }
+});
 
-    process.on('SIGINT', () => {
-        console.log('Server is shutting down...');
-        server.close(() => {
-            console.log('HTTP server closed.');
-            process.exit(0);
-        });
+process.on('SIGINT', () => {
+    console.log('Server is shutting down...');
+    server.close(() => {
+        console.log('HTTP server closed.');
+        process.exit(0);
     });
 });
-function getMenuHtml() {
-    return `
-        <html>
-            <head>
-                <title>gmail-node-mailer npm package Test Server</title>
-                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-                <style>
-                    body {
-                        font-family: 'Lucida Console', Monaco, monospace;
-                        background-color: #333;
-                        color: #8CFF98;
-                    }
-                    .branding {
-                        color: #8CFF98;
-                        text-transform: lowercase;
-                        border-bottom: 2px solid #8CFF98;
-                        padding-bottom: 10px;
-                    }
-                    #menu {
-                        padding: 20px;
-                        background: #222;
-                        min-height: 100vh;
-                    }
-                    #menu button {
-                        margin-bottom: 10px;
-                        width: 100%;
-                    }
-                    #log {
-                        background: #000;
-                        border-left: 1px solid #666;
-                        overflow-y: auto;
-                        padding: 20px;
-                        height: 100vh;
-                    }
-                    #log table {
-                        margin-bottom: 0;
-                    }
-                    th, td {
-                        border: 1px solid #666;
-                        padding: 8px;
-                        text-align: left;
-                        overflow: hidden;
-                    }
-                    th {
-                        background-color: #555;
-                    }
-                    tr:nth-child(odd) {
-                        background-color: #222;
-                    }
-                    #statusMessage {
-                        padding: 5px;
-                        background-color: #222;
-                        border: 1px solid #666;
-                        margin-bottom: 20px;
-                    }
-                    .info {
-                        padding: 5px;
-                        background-color: #222;
-                        color: #8CFF98;
-                        margin: 10px 0;
-                        font-size: 0.8em;
-                    }
-                    .info a {
-                        color: #8CFF98;
-                        text-decoration: none;
-                    }
-                    .info a:hover {
-                        text-decoration: underline;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container-fluid">
-                    <div class="row">
-                            <div id="menu" class="col-md-3">
-                            <h1 class="branding">gmail-node-mailer npm package Test Server</h1>
-                            <div class="link-info">
-                                <span>🔗</span>
-                                <a href="https://github.com/our-node-packages/gmail-node-mailer" target="_blank">Package GitHub Repository</a>
-                            </div>
-                            <div class="link-info">
-                                <span>📦</span>
-                                <a href="https://www.npmjs.com/package/gmail-node-mailer" target="_blank">NPM Package</a>
-                            </div>
-                            <div class="link-info">
-                                <span>👀</span>
-                                <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server" target="_blank">Example Server</a>
-                            </div>
-                            <button onclick="makeRequest('/simulate-server-status')" class="btn btn-success">Simulate Server Status Emails</button>
-                            <button onclick="makeRequest('/send-html-email')" class="btn btn-success">Send HTML Email</button>
-                            <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-success">Send Plain Text Email</button>
-                            <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-success">Send HTML Email with Attachment</button>
-                            <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-success">Send Subscription Renewal Email</button>
-                            <button onclick="makeRequest('/send-new-purchase')" class="btn btn-success">Send New Purchase Email</button>
-                        </div>
-                        <div class="col-md-9">
-                            <div id="statusMessage">Ready to send emails...</div>
-                            <div id="log">
-                                <table class="table table-dark table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Action</th>
-                                            <th>Sent</th>
-                                            <th>Status</th>
-                                            <th>Status Text</th>
-                                            <th>Message</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                <script>
-                    function makeRequest(url) {
-                        fetch(url)
-                            .then(response => response.json())
-                            .then(data => {
-                                const log = document.querySelector('#log tbody');
-                                const row = document.createElement('tr');
-                                row.innerHTML = '<td>' + data.path + '</td>' +
-                                                '<td>' + data.sent + '</td>' +
-                                                '<td>' + (data.status || 'N/A') + '</td>' +
-                                                '<td>' + (data.statusText || 'No status text') + '</td>' +
-                                                '<td>' + (data.message || 'No message provided') + '</td>';
-                                log.appendChild(row);
-                                const statusMessage = document.getElementById('statusMessage');
-                                statusMessage.textContent = 'Latest activity updated below:';
-                            })
-                            .catch(err => {
-                                console.error('Request failed', err);
-                                const statusMessage = document.getElementById('statusMessage');
-                                statusMessage.textContent = 'Failed to update due to an error.';
-                            });
-                    }
-                </script>
-            </body>
-        </html>
-    `;
-}
