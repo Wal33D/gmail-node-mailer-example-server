@@ -34,7 +34,7 @@ import express from 'express';
 
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 import { initializeEmailClient } from './init/initializeEmailClient';
-import {*}  from './examples';
+import * as examples from './examples';
 
 declare global {
     var gmailClient: any;
@@ -109,8 +109,13 @@ initializeEmailClient().then(emailClientResult => {
 
     // Start the server and open a browser window
     const server = app.listen(PORT, async () => {
-        const open = (await import('open')).default; // Ensure this import works correctly
-        await open(`http://localhost:${PORT}`);
+        console.log('[Gmail-Node-Mailer Test Server] - Server is listening on port:', PORT);
+        try {
+            const open = (await import('open')).default; 
+            await open(`http://localhost:${PORT}`);
+        } catch (error) {
+            console.error('Failed to open browser:', error);
+        }
     });
 
     // Handle SIGINT for graceful shutdown

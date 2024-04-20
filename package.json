@@ -1,18 +1,19 @@
 {
+  "type": "module",
   "name": "gmail-node-mailer-test-server",
   "version": "1.0.0",
-  "description": "gmail-node-mailer-test-server",
+  "description": "This Express-based application demonstrates the 'gmail-node-mailer' package capabilities, serving as a practical showcase for integrating email functionalities into web applications. It features a variety of email types, including HTML emails, plain text emails, and emails with attachments, covering use cases like subscription renewals, purchase confirmations, and server status notifications. Ideal for developers seeking hands-on examples for email integration, the server provides a simulated environment to test and understand email operations in real-world application scenarios.",
   "main": "src/server.js",
   "engines": {
     "node": "18.18.2"
   },
   "scripts": {
     "predev": "node scripts/generateIndex.js",
-    "dev": "nodemon --watch src --ext js,ts --exec \"ts-node src/server.ts\"",
+    "dev": "nodemon --watch src --ext js,ts,json --exec \"node --loader ts-node/esm src/server.ts\"",
     "prebuild": "node scripts/generateIndex.js",
     "build": "tsc",
     "prestart": "node scripts/generateIndex.js",
-    "start": "yarn build && node build/server.js",
+    "start": "npm run build && node --loader ts-node/esm build/server.js",
     "clean": "rimraf dist/* --glob",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,11 +27,13 @@
     "nodemon": "^3.1.0",
     "open": "^10.1.0",
     "pdfkit": "^0.15.0",
-    "stream-buffers": "^3.0.2",
-    "ts-node": "^10.9.2"
+    "stream-buffers": "^3.0.2"
   },
   "devDependencies": {
+    "@tsconfig/node14": "^14.1.2",
+    "@types/node": "^20.12.7",
     "prettier": "^2.8.8",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "husky": {
