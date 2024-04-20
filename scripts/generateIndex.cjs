@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const directoryPath = path.join(process.cwd(), 'src/examples');
 const exportFileContents = [];
@@ -17,7 +17,7 @@ fs.readdir(directoryPath, (err, files) => {
             exportFileContents.push(`export * from './${moduleName}';`);
         }
     });
-
+    
     // Write the content to index.ts in the examples directory
     fs.writeFileSync(path.join(directoryPath, 'index.ts'), exportFileContents.join('\n'));
 });
