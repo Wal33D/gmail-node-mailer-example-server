@@ -96,122 +96,111 @@ initializeEmailClient().then(emailClientResult => {
             process.exit(0);
         });
     });
-});function getMenuHtml() {
+});
+function getMenuHtml() {
     return `
         <html>
             <head>
                 <title>Gmail-Node-Mailer Test Server</title>
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
                 <style>
                     body {
                         font-family: 'Lucida Console', Monaco, monospace;
                         background-color: #333;
                         color: #8CFF98;
-                        margin: 0;
-                        padding: 20px;
                     }
                     h1 {
                         border-bottom: 2px solid #8CFF98;
                     }
-                    ul {
-                        list-style: none;
-                        padding: 0;
+                    #menu {
+                        padding-right: 20px;
                     }
-                    li {
+                    #menu button {
                         margin-bottom: 10px;
-                    }
-                    button {
-                        padding: 10px 20px;
-                        cursor: pointer;
-                        background-color: #4CAF50;
-                        color: white;
-                        border: none;
-                        border-radius: 5px;
-                    }
-                    button:hover {
-                        background-color: #45a049;
+                        width: 100%;
                     }
                     #log {
-                        height: 300px;
-                        width: 100%;
                         background: #000;
-                        overflow-y: auto;
                         border: 1px solid #666;
-                        padding: 10px;
-                        margin-top: 20px;
                     }
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        table-layout: fixed;  /* Ensures columns have consistent width */
+                    #log table {
+                        margin-bottom: 0;
                     }
                     th, td {
                         border: 1px solid #666;
-                        padding: 8px;
                         text-align: left;
-                        vertical-align: top;
-                        min-height: 50px;  /* Minimum height for each table row */
-                        overflow: hidden;  /* Keeps text within the cell */
+                        overflow: hidden;
                     }
                     th {
                         background-color: #555;
                     }
-                    tbody tr:nth-child(odd) {
+                    tr:nth-child(odd) {
                         background-color: #222;
                     }
                     #statusMessage {
-                        margin-top: 20px;
                         padding: 5px;
                         background-color: #222;
                         border: 1px solid #666;
+                        margin-bottom: 20px;
                     }
                 </style>
             </head>
             <body>
-                <h1>Gmail-Node-Mailer Test Server</h1>
-                <div id="statusMessage">Ready to send emails...</div>
-                <ul>
-                    <li><button onclick="makeRequest('/simulate-server-status')">Simulate Server Status Emails</button></li>
-                    <li><button onclick="makeRequest('/send-html-email')">Send HTML Email</button></li>
-                    <li><button onclick="makeRequest('/send-plain-text-email')">Send Plain Text Email</button></li>
-                    <li><button onclick="makeRequest('/send-html-email-attachment')">Send HTML Email with Attachment</button></li>
-                    <li><button onclick="makeRequest('/send-subscription-renewal')">Send Subscription Renewal Email</button></li>
-                    <li><button onclick="makeRequest('/send-new-purchase')">Send New Purchase Email</button></li>
-                </ul>
-                <table id="log">
-                    <thead>
-                        <tr>
-                            <th>Action</th>
-                            <th>Sent</th>
-                            <th>Status</th>
-                            <th>Status Text</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                <div class="container-fluid">
+                    <h1>Gmail-Node-Mailer Test Server</h1>
+                    <div id="statusMessage">Ready to send emails...</div>
+                    <div class="row">
+                        <div id="menu" class="col-md-4">
+                            <button onclick="makeRequest('/simulate-server-status')" class="btn btn-success">Simulate Server Status Emails</button>
+                            <button onclick="makeRequest('/send-html-email')" class="btn btn-success">Send HTML Email</button>
+                            <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-success">Send Plain Text Email</button>
+                            <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-success">Send HTML Email with Attachment</button>
+                            <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-success">Send Subscription Renewal Email</button>
+                            <button onclick="makeRequest('/send-new-purchase')" class="btn btn-success">Send New Purchase Email</button>
+                        </div>
+                        <div class="col-md-8">
+                            <div id="log" class="overflow-auto">
+                                <table class="table table-dark table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Action</th>
+                                            <th>Sent</th>
+                                            <th>Status</th>
+                                            <th>Status Text</th>
+                                            <th>Message</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
                 <script>
                     function makeRequest(url) {
                         fetch(url)
                             .then(response => response.json())
                             .then(data => {
-                            const log = document.querySelector('#log tbody');
-                            const row = document.createElement('tr');
-                            row.innerHTML = '<td>' + data.path + '</td>' +
-                                            '<td>' + data.sent + '</td>' +
-                                            '<td>' + (data.status || 'N/A') + '</td>' +
-                                            '<td>' + (data.statusText || 'No status text') + '</td>' +
-                                            '<td>' + (data.message || 'No message provided') + '</td>';
-                            log.appendChild(row);
-                            // Update status message
-                            const statusMessage = document.getElementById('statusMessage');
-                            statusMessage.textContent = 'Latest activity updated below:';
-                        })
-                        .catch(err => {
-                            console.error('Request failed', err);
-                            const statusMessage = document.getElementById('statusMessage');
-                            statusMessage.textContent = 'Failed to update due to an error.';
-                        });
+                                const log = document.querySelector('#log tbody');
+                                const row = document.createElement('tr');
+                                row.innerHTML = '<td>' + data.path + '</td>' +
+                                                '<td>' + data.sent + '</td>' +
+                                                '<td>' + (data.status || 'N/A') + '</td>' +
+                                                '<td>' + (data.statusText || 'No status text') + '</td>' +
+                                                '<td>' + (data.message || 'No message provided') + '</td>';
+                                log.appendChild(row);
+                                const statusMessage = document.getElementById('statusMessage');
+                                statusMessage.textContent = 'Latest activity updated below:';
+                            })
+                            .catch(err => {
+                                console.error('Request failed', err);
+                                const statusMessage = document.getElementById('statusMessage');
+                                statusMessage.textContent = 'Failed to update due to an error.';
+                            });
                     }
                 </script>
             </body>
