@@ -30,7 +30,8 @@
  */
 
 require('dotenv-flow').config();
-
+import fs from 'fs';
+import path from 'path';
 import opener from 'opener';
 import express from 'express';
 import serveIndex from 'serve-index';
@@ -52,16 +53,46 @@ declare global {
 const PORT = process.env.DEFAULT_URL ? parseInt(process.env.DEFAULT_URL.split(':').pop() as string) || 6338 : 6338;
 const app = express();
 
+
+app.get('/package-version', (req, res) => {
+    // Correctly point to the package.json within node_modules at the project root
+    const packagePath = path.join(__dirname, '..', 'node_modules', 'gmail-node-mailer', 'package.json');
+
+    fs.readFile(packagePath, (err:any, data:any) => {
+        if (err) {
+            console.error('Error reading file:', err);
+            return res.status(500).send('Error reading package version');
+        }
+        const packageJson = JSON.parse(data);
+        res.json({ version: packageJson.version }); // Send back the exact version
+    });
+});
+
+// Endpoint to get the version of the demo server
+app.get('/demo-server-version', (req, res) => {
+    const serverPackagePath = path.join(__dirname, '..', 'package.json');
+    fs.readFile(serverPackagePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading file:', err);
+            return res.status(500).send('Error reading server version');
+        }
+        const packageJson = JSON.parse(data);
+        res.json({ version: packageJson.version });
+    });
+});
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/files', express.static('dummyFiles'), serveIndex('dummyFiles', {'icons': true}));
+app.use('/files', express.static('dummyFiles'), serveIndex('dummyFiles', { 'icons': true }));
 app.use(express.static('public')); // Serve static files from 'public' directory
 
 function setupEmailEndpoint(path: string, emailFunction: () => Promise<ISendEmailResponse>) {
     app.get(path, async (req, res) => {
         const result = await emailFunction();
         res.json({
-            path: path.replace('/', '').replace(/-/g, ' ').toUpperCase(),
+            path: path.replace('/', '').replace(/-/g, ' ')
+                .toLowerCase()  // Convert the entire string to lowercase first
+                .replace(/\b\w/g, letter => letter.toUpperCase()),  // Capitalize the first letter of each word
             sent: result.sent,
             status: result.status || 'N/A',
             statusText: result.statusText || 'No status text',
@@ -94,8 +125,8 @@ app.get('/simulate-server-status', async (req, res) => {
 
         // Sending both results back as an array of results
         res.json([
-            { action: 'Server Start', ...startEmailResult },
-            { action: 'Server Shutdown', ...stopEmailResult }
+            { operation: 'Server Start', ...startEmailResult },
+            { operation: 'Server Shutdown', ...stopEmailResult }
         ]);
     }, 2000); // 2000 milliseconds delay
 });
