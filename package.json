@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "gmail-node-mailer-test-server",
   "version": "1.0.0",
   "description": "gmail-node-mailer-test-server",
@@ -8,14 +7,11 @@
     "node": "18.18.2"
   },
   "scripts": {
-    "generate-index": "node -e \"const fs=require('fs');const path=require('path');const dir=path.join(process.cwd(),'src/examples');fs.readdir(dir,(err,files)=>{if(err){console.error(err);process.exit(1);}const exports=files.filter(f=>f.endsWith('.ts')&&f!=='index.ts').map(f=>`export * from './${f.replace(/\\.ts$/, '')}';`).join('\\n');fs.writeFileSync(path.join(dir,'index.ts'),exports);})\"",
-    "predev": "tsc && yarn generate-index",
-    "dev": "nodemon --watch src --ext ts,json --exec \"ts-node --loader ts-node/esm src/server.ts\"",
-    "prebuild": "yarn generate-index",
-    "build": "tsc",
-    "prestart": "yarn generate-index",
-    "start": "yarn build && node build/server.js",
-    "clean": "rimraf dist/*"
+    "build": "yarn tsc",
+    "dev": "nodemon --watch src --ext js,ts --exec \"ts-node src/server.ts\"",
+    "start": "node build/server.js",
+    "clean": "rimraf build/* --glob",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Wal33D",
   "license": "ISC",
@@ -25,16 +21,14 @@
     "express": "^4.17.1",
     "gmail-node-mailer": "^1.8.5",
     "nodemon": "^3.1.0",
-    "open": "^10.1.0",
+    "opener": "^1.5.2",
     "pdfkit": "^0.15.0",
     "stream-buffers": "^3.0.2"
   },
   "devDependencies": {
-    "@tsconfig/node14": "^14.1.2",
-    "@types/node": "^20.12.7",
+    "@types/opener": "^1.4.3",
     "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.0.4"
   },
   "husky": {
     "hooks": {

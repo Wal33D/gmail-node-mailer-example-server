@@ -13,7 +13,7 @@
  *    - New Purchase Confirmations: Sends purchase confirmation emails, highlighting how to enhance customer purchase experiences with immediate confirmation.
  *    - Server Status Notifications: Automatically sends an email when the server starts or shuts down, demonstrating the package's capability to integrate with server lifecycle events.
  *
- * This server is particularly useful for developers looking to integrate email functionalities in their applications using 'gmail-node-mailer', providing practical, executable examples.
+ * This server is particularly useful for developers looking to integrate email functionalities in their applications using 'gmail-node-mailer', providing practical, executable 
  *
  * Note:
  *  - The server requires certain environment variables to be set for proper configuration and operation.
@@ -31,10 +31,16 @@
 
 require('dotenv-flow').config();
 import express from 'express';
+import opener from 'opener';
 
+import { sendHtmlEmail } from './examples/sendHtmlEmail';
+import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
-import { initializeEmailClient } from '/init/initializeEmailClient';
-import * as examples from './examples';
+import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
+import { initializeEmailClient } from './init/initializeEmailClient';
+import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
+import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
+import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
 
 declare global {
     var gmailClient: any;
@@ -71,39 +77,39 @@ initializeEmailClient().then(emailClientResult => {
 
     // Define endpoints for each email function
     app.get('/start-server', async (req, res) => {
-        const serverStartResult: ISendEmailResponse = await examples.sendServerStatusEmail('start');
+        const serverStartResult: ISendEmailResponse = await sendServerStatusEmail('start');
         console.log('Server Start Email Send Result:', serverStartResult.sent);
         res.send('<p>Server started. Email sent.</p>');
     });
 
     app.get('/stop-server', async (req, res) => {
-        const shutdownEmailResult: ISendEmailResponse = await examples.sendServerStatusEmail('shutdown');
+        const shutdownEmailResult: ISendEmailResponse = await sendServerStatusEmail('shutdown');
         console.log('Server Shutdown Email Send Result:', shutdownEmailResult.sent);
         res.send('<p>Server stopped. Email sent.</p>');
     });
 
     app.get('/send-html-email', async (req, res) => {
-        const result: ISendEmailResponse = await examples.sendHtmlEmail();
+        const result: ISendEmailResponse = await sendHtmlEmail();
         res.send(`<p>HTML Email Sent: ${result.sent}</p>`);
     });
 
     app.get('/send-plain-text-email', async (req, res) => {
-        const result: ISendEmailResponse = await examples.sendPlainTextEmail();
+        const result: ISendEmailResponse = await sendPlainTextEmail();
         res.send(`<p>Plain Text Email Sent: ${result.sent}</p>`);
     });
 
     app.get('/send-html-email-attachment', async (req, res) => {
-        const result: ISendEmailResponse = await examples.sendHtmlEmailWithAttachment();
+        const result: ISendEmailResponse = await sendHtmlEmailWithAttachment();
         res.send(`<p>HTML Email with Attachment Sent: ${result.sent}</p>`);
     });
 
     app.get('/send-subscription-renewal', async (req, res) => {
-        const result: ISendEmailResponse = await examples.sendSubscriptionRenewalEmail();
+        const result: ISendEmailResponse = await sendSubscriptionRenewalEmail();
         res.send(`<p>Subscription Renewal Email Sent: ${result.sent}</p>`);
     });
 
     app.get('/send-new-purchase', async (req, res) => {
-        const result: ISendEmailResponse = await examples.sendNewPurchaseEmail();
+        const result: ISendEmailResponse = await sendNewPurchaseEmail();
         res.send(`<p>New Purchase Email Sent: ${result.sent}</p>`);
     });
 
@@ -111,8 +117,9 @@ initializeEmailClient().then(emailClientResult => {
     const server = app.listen(PORT, async () => {
         console.log('[Gmail-Node-Mailer Test Server] - Server is listening on port:', PORT);
         try {
-            const open = (await import('open')).default;
-            await open(`http://localhost:${PORT}`);
+            await opener(`http://localhost:${PORT}`);
+
+
         } catch (error) {
             console.error('Failed to open browser:', error);
         }
