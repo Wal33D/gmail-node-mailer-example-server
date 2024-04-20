@@ -45,21 +45,28 @@ export async function sendHtmlEmailWithAttachment(): Promise<ISendEmailResponse>
     <html>
     <head>
         <style>
-            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f0f0f0; }
+            body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
+            .container { max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
             .header { background-color: #007bff; color: white; padding: 10px; text-align: center; }
-            .footer { background-color: #007bff; color: white; padding: 10px; text-align: center; }
+            .content { padding: 20px; text-align: left; line-height: 1.6; color: #333; }
+            footer { font-size: smaller; text-align: center; padding-top: 10px; color: #787878; }
+            footer a { color: #007bff; text-decoration: none; }
         </style>
     </head>
     <body>
-        <div class="header">
-            <h1>Service Notification</h1>
-        </div>
-        <p>Your subscription to StreamBox is now active. You have unlimited access to a vast library of movies and series. Enjoy! 🍿🎬</p>
-        <div class="footer">
-            <p>Contact us at <a href="mailto:no-reply@StreamBox.com" style="color: white;">no-reply@StreamBox.com</a></p>
+        <div class="container">
+            <div class="header">
+                <h1>Service Notification</h1>
+            </div>
+            <div class="content">
+                <p>Your subscription to StreamBox is now active. You have unlimited access to a vast library of movies and series. Enjoy! 🍿🎬</p>
+            </div>
+            <footer>
+                <p>Contact us at <a href="mailto:no-reply@StreamBox.com">no-reply@StreamBox.com</a></p>
+            </footer>
         </div>
     </body>
-    </html>
+    </html>    
     `;
 
     // Handle text file creation and encoding

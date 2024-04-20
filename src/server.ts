@@ -29,15 +29,13 @@
  *    # GMAIL_MAILER_SERVICE_ACCOUNT={"type":"service_account","project_id":"...","private_key_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n","client_email":"....iam.gserviceaccount.com","client_id":"...","auth_uri":"...","token_uri":"...","auth_provider_x509_cert_url":"...","client_x509_cert_url":"..."}
  */
 require('dotenv-flow').config();
-
 import express from 'express';
-
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 import { initializeEmailClient } from './init/initializeEmailClient';
-import * as examples from './examples'; // Importing example functions to demonstrate email capabilities
+import * as examples from './examples';
 
 declare global {
-    var gmailClient: any; // Global declaration to share the Gmail client across the demonstration modules
+    var gmailClient: any;
 }
 
 const PORT = process.env.DEFAULT_URL
@@ -46,53 +44,47 @@ const PORT = process.env.DEFAULT_URL
 
 (async () => {
     const app = express();
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use('/files', express.static('dummyFiles'));
 
-    // Initialize the Gmail client as a demonstration of setting up the 'gmail-node-mailer' package for email operations
     const emailClientResult = await initializeEmailClient();
     global.gmailClient = emailClientResult.gmailClient;
 
-    // Middleware setup for handling form submissions and JSON data as part of the email sending demonstrations
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
+    app.get('/', (req, res) => {
+        res.send(`
+            <h1>Server Control Panel</h1>
+            <form action="/control" method="post">
+                <input type="submit" name="action" value="Start Server">
+                <input type="submit" name="action" value="Stop Server">
+            </form>
+        `);
+    });
 
-    // Serve static files as part of demonstrating attachment handling in email sending
-    app.use('/files', express.static('dummyFiles'));
+    app.post('/control', async (req, res) => {
+        const action = req.body.action;
+        if (action === 'Start Server') {
+            const serverStartResult: ISendEmailResponse = await examples.sendServerStatusEmail('start');
+            console.log('Server Start Email Send Result:', serverStartResult.sent);
+            res.send("<p>Server started. Email notification sent.</p>");
+        } else if (action === 'Stop Server') {
+            const shutdownEmailResult: ISendEmailResponse = await examples.sendServerStatusEmail('shutdown');
+            console.log('Server Shutdown Email Send Result:', shutdownEmailResult.sent);
+            process.exit(0);
+        } else {
+            res.send("<p>Invalid action.</p>");
+        }
+    });
 
-    // Demonstration of sending a notification email upon server start
-    const serverStartResult: ISendEmailResponse = await examples.sendServerStatusEmail('start');
-    console.log('Server Start Email Send Result:', serverStartResult.sent);
-
-    // Logs server startup for demonstration purposes
     const server = app.listen(PORT, () => {
         console.log('[Gmail-Node-Mailer Test Server] - Initialization Summary:');
         console.log('Server is listening on port:', PORT);
     });
 
-    // Demonstrates graceful shutdown and notification via email on SIGINT
-    process.on('SIGINT', async () => {
-        const shutdownEmailResult: ISendEmailResponse = await examples.sendServerStatusEmail('shutdown');
-        console.log('Server Shutdown Email Send Result:', shutdownEmailResult.sent);
-
+    process.on('SIGINT', () => {
         server.close(() => {
             console.log('HTTP server closed.');
             process.exit(0);
         });
     });
-
-    // Demonstrates sending various types of emails using the 'gmail-node-mailer' package
-    const sendHTMLEmailResult: ISendEmailResponse = await examples.sendHtmlEmail();
-    console.log('Service Notification Email Send Result:', { sent: sendHTMLEmailResult.sent, status: sendHTMLEmailResult.status, message: sendHTMLEmailResult.message });
-
-    const plainTextEmailResult: ISendEmailResponse = await examples.sendPlainTextEmail();
-    console.log('Plain Text Email Send Result:', { sent: plainTextEmailResult.sent, status: plainTextEmailResult.status, message: plainTextEmailResult.message });
-
-    const htmlEmailWithAttachmentResult: ISendEmailResponse = await examples.sendHtmlEmailWithAttachment();
-    console.log('HTML Email with Attachment Send Result:', { sent: htmlEmailWithAttachmentResult.sent, status: htmlEmailWithAttachmentResult.status, message: htmlEmailWithAttachmentResult.message });
-
-    const sendSubscriptionRenewalResult: ISendEmailResponse = await examples.sendSubscriptionRenewalEmail();
-    console.log(`Send Subscription Renewal Email Result:`, { sent: sendSubscriptionRenewalResult.sent, status: sendSubscriptionRenewalResult.status, message: sendSubscriptionRenewalResult.message });
-
-    const sendNewPurchaseResult: ISendEmailResponse = await examples.sendNewPurchaseEmail();
-    console.log(`Send New Purchase Email Result:`, { sent: sendNewPurchaseResult.sent, status: sendNewPurchaseResult.status, message: sendNewPurchaseResult.message });
-
 })();
