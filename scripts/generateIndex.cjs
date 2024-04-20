@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const directoryPath = path.join(__dirname, '../src/examples');
+const directoryPath = path.join(process.cwd(), 'src/examples');
 const exportFileContents = [];
 
 // Read through the examples directory and export all TypeScript files except index.ts

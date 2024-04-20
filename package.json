@@ -8,12 +8,12 @@
     "node": "18.18.2"
   },
   "scripts": {
-    "predev": "node scripts/generateIndex.js",
-    "dev": "nodemon --watch src --ext js,ts,json --exec \"node --loader ts-node/esm src/server.ts\"",
-    "prebuild": "node scripts/generateIndex.js",
+    "predev": "node scripts/generateIndex.cjs",
+    "dev": "nodemon --watch src --ext js,ts --exec \"node build/server.js\"",
+    "prebuild": "node scripts/generateIndex.cjs",
     "build": "tsc",
-    "prestart": "node scripts/generateIndex.js",
-    "start": "npm run build && node --loader ts-node/esm build/server.js",
+    "prestart": "node scripts/generateIndex.cjs",
+    "start": "yarn build && node build/server.js",
     "clean": "rimraf dist/* --glob",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
