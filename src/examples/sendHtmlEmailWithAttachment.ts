@@ -32,17 +32,21 @@
  * @returns {Promise<ISendEmailResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
 
+import fs from 'fs';
+import util from 'util';
 import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
 export async function sendHtmlEmailWithAttachment(): Promise<ISendEmailResponse> {
+
     const moviePosterImagePath = 'https://res.cloudinary.com/dkfrhzkaf/image/upload/v1713597609/moviePoster.png';
     const movieFullUrl = 'https://archive.org/download/short.circuit.1986.2160p/Short.Circuit.1986.2160p.BluRay.Topaz.AMQ.Upscale.x265-SoF.mp4';
     const trailerUrl = 'https://dn720400.ca.archive.org/0/items/short-circuit/Short%20Circuit.mp4';
     const recipientEmail = 'waleed@glitchgaming.us';
     const subject = '🎬 Now Streaming: Short Circuit - Your Adventure Awaits!';
 
-// HTML Content
-const message = `
+
+    // HTML Content
+    const message = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,11 +111,21 @@ const message = `
         mimeType: 'text/html',
         content: invoiceBase64,
     };
+    const moviePosterDownload = './dummyFiles/downloadableMoviePoster.png';
+    const moviePosterData = await util.promisify(fs.readFile)(moviePosterDownload);
+    const moviePosterBase64 = moviePosterData.toString('base64');
+
+    // Movie poster attachment
+    const moviePosterAttachment = {
+        filename: 'MovieWallpaper.jpg',
+        mimeType: 'image/jpeg',
+        content: moviePosterBase64,
+    };
 
     return await global.gmailClient.sendEmail({
         recipientEmail,
         message,
         subject,
-        attachments: [attachment]
+        attachments: [attachment, moviePosterAttachment]
     } as ISendEmailParams) as ISendEmailResponse;
 }
