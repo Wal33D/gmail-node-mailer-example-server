@@ -1,6 +1,6 @@
 {
   "name": "gmail-node-mailer-test-server",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "gmail-node-mailer-test-server",
   "main": "src/server.js",
   "engines": {
@@ -20,17 +20,19 @@
     "dotenv-flow": "^3.2.0",
     "express": "^4.17.1",
     "gmail-node-mailer": "^1.8.5",
+    "node-fetch": "^3.3.2",
     "nodemon": "^3.1.0",
     "opener": "^1.5.2",
     "pdfkit": "^0.15.0",
+    "serve-index": "^1.9.1",
     "stream-buffers": "^3.0.2"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.6.11",
     "@types/opener": "^1.4.3",
     "@types/serve-index": "^1.9.4",
     "prettier": "^2.8.8",
-    "serve-index": "^1.9.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.4.5"
   },
   "husky": {
     "hooks": {
