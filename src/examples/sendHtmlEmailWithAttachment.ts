@@ -43,7 +43,7 @@ export async function sendHtmlEmailWithAttachment(): Promise<ISendEmailResponse>
     const trailerUrl = 'https://dn720400.ca.archive.org/0/items/short-circuit/Short%20Circuit.mp4';
     const recipientEmail = 'waleed@glitchgaming.us';
     const subject = '🎬 Now Streaming: Short Circuit - Your Adventure Awaits!';
-
+    const senderName = 'StreamBox Team';
 
     // HTML Content
     const message = `
@@ -124,6 +124,7 @@ export async function sendHtmlEmailWithAttachment(): Promise<ISendEmailResponse>
 
     return await global.gmailClient.sendEmail({
         recipientEmail,
+        senderName,
         message,
         subject,
         attachments: [attachment, moviePosterAttachment]
