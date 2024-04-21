@@ -30,21 +30,13 @@
  */
 
 require('dotenv-flow').config();
-import fs from 'fs';
-import path from 'path';
+
 import opener from 'opener';
+import router from './routes'; // Import the router from the routes file
 import express from 'express';
 import serveIndex from 'serve-index';
 
-import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
-
-import { sendHtmlEmail } from './examples/sendHtmlEmail';
-import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
-import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
-import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
 import { initializeEmailClient } from './init/initializeEmailClient';
-import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
-import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
 
 declare global {
     var gmailClient: any;
@@ -53,105 +45,24 @@ declare global {
 const PORT = process.env.DEFAULT_URL ? parseInt(process.env.DEFAULT_URL.split(':').pop() as string) || 6338 : 6338;
 const app = express();
 
-
-app.get('/package-version', (req, res) => {
-    // Correctly point to the package.json within node_modules at the project root
-    const packagePath = path.join(__dirname, '..', 'node_modules', 'gmail-node-mailer', 'package.json');
-
-    fs.readFile(packagePath, (err:any, data:any) => {
-        if (err) {
-            console.error('Error reading file:', err);
-            return res.status(500).send('Error reading package version');
-        }
-        const packageJson = JSON.parse(data);
-        res.json({ version: packageJson.version }); // Send back the exact version
-    });
-});
-
-// Endpoint to get the version of the demo server
-app.get('/demo-server-version', (req, res) => {
-    const serverPackagePath = path.join(__dirname, '..', 'package.json');
-    fs.readFile(serverPackagePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading file:', err);
-            return res.status(500).send('Error reading server version');
-        }
-        const packageJson = JSON.parse(data);
-        res.json({ version: packageJson.version });
-    });
-});
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Static and index serving middleware
 app.use('/files', express.static('dummyFiles'), serveIndex('dummyFiles', { 'icons': true }));
-app.use(express.static('public')); // Serve static files from 'public' directory
+app.use(express.static('public'));
 
-function setupEmailEndpoint(path: string, emailFunction: () => Promise<ISendEmailResponse>) {
-    app.get(path, async (req, res) => {
-        const result = await emailFunction();
-        res.json({
-            path: path.replace('/', '').replace(/-/g, ' ')
-                .toLowerCase()  // Convert the entire string to lowercase first
-                .replace(/\b\w/g, letter => letter.toUpperCase()),  // Capitalize the first letter of each word
-            sent: result.sent,
-            status: result.status || 'N/A',
-            statusText: result.statusText || 'No status text',
-            message: result.message || 'No message provided',
-        });
-    });
-}
+// Using the imported router for all email functionality and other endpoints
+app.use(router);
 
-// Setup email endpoints
+// Initialize email client and setup global access
 initializeEmailClient().then((emailClientResult: { gmailClient: any; }) => {
     global.gmailClient = emailClientResult.gmailClient;
-    setupEmailEndpoint('/send-html-email', sendHtmlEmail);
-    setupEmailEndpoint('/send-plain-text-email', sendPlainTextEmail);
-    setupEmailEndpoint('/send-html-email-attachment', sendHtmlEmailWithAttachment);
-    setupEmailEndpoint('/send-subscription-renewal', sendSubscriptionRenewalEmail);
-    setupEmailEndpoint('/send-new-purchase', sendNewPurchaseEmail);
 });
 
-// Endpoint to simulate server start and stop notifications
-app.get('/simulate-server-status', async (req, res) => {
-    console.log('[Demo] Simulating server start...');
-    const startEmailResult = await sendServerStatusEmail('start');
-    console.log('Server Start Email Send Result:', startEmailResult.sent);
-
-    // Introduce a delay of 2 seconds before sending the stop email
-    setTimeout(async () => {
-        console.log('[Demo] Simulating server shutdown...');
-        const stopEmailResult = await sendServerStatusEmail('shutdown');
-        console.log('Server Shutdown Email Send Result:', stopEmailResult.sent);
-
-        // Sending both results back as an array of results
-        res.json([
-            { operation: 'Server Start', ...startEmailResult },
-            { operation: 'Server Shutdown', ...stopEmailResult }
-        ]);
-    }, 2000); // 2000 milliseconds delay
-});
-
-import { fetchPackageDetails } from './helpers/npmPackageDetails';
-
-app.get('/npm-package-details', async (req, res) => {
-    const packageName = process.env.PACKAGE_NAME || 'default-package-name';
-    try {
-        const packageDetails = await fetchPackageDetails(packageName);
-        res.json(packageDetails);
-    } catch (error) {
-        console.error('Failed to fetch package details:', error);
-        res.status(500).json({ error: 'Failed to fetch package details' });
-    }
-});
-
-
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
-});
-
-// Open browser window on server start
+// Start the server and open a browser window
 const server = app.listen(PORT, () => {
-    console.log(`[Gmail-Node-Mailer Test Server] - Server is listening on port: ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
     opener(`http://localhost:${PORT}`);
 });
 
