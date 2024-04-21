@@ -33,7 +33,7 @@
 
 import fs from 'fs';
 import util from 'util';
-import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer';
 
 export async function sendNewPurchaseEmail(): Promise<ISendEmailResponse> {
     // Optional sender email address; default from initialization will be used if this is not specified.

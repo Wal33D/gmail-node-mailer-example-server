@@ -3,7 +3,6 @@ import path from 'path';
 
 import { Router } from 'express';
 
-import { ISendEmailResponse } from 'gmail-node-mailer';
 import { sendHtmlEmail } from './examples/sendHtmlEmail';
 import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
 import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
@@ -17,39 +16,39 @@ export const router = Router();
 
 // Email sending endpoints
 router.get('/send-html-email', async (req, res) => {
-    const result: ISendEmailResponse = await sendHtmlEmail();
+    const result = await sendHtmlEmail();
     res.json(result);
 });
 
 router.get('/send-plain-text-email', async (req, res) => {
-    const result: ISendEmailResponse = await sendPlainTextEmail();
+    const result = await sendPlainTextEmail();
     res.json(result);
 });
 
 router.get('/send-html-email-attachment', async (req, res) => {
-    const result: ISendEmailResponse = await sendHtmlEmailWithAttachment();
+    const result = await sendHtmlEmailWithAttachment();
     res.json(result);
 });
 
 router.get('/send-subscription-renewal', async (req, res) => {
-    const result: ISendEmailResponse = await sendSubscriptionRenewalEmail();
+    const result = await sendSubscriptionRenewalEmail();
     res.json(result);
 });
 
 router.get('/send-new-purchase', async (req, res) => {
-    const result: ISendEmailResponse = await sendNewPurchaseEmail();
+    const result = await sendNewPurchaseEmail();
     res.json(result);
 });
 
 // Endpoint to simulate server status notifications
 router.get('/simulate-server-status', async (req, res) => {
     console.log('[Demo] Simulating server start...');
-    const startResult: ISendEmailResponse = await sendServerStatusEmail('start');
+    const startResult = await sendServerStatusEmail('start');
     console.log('Server Start Email Send Result:', startResult.sent);
 
     setTimeout(async () => {
         console.log('[Demo] Simulating server shutdown...');
-        const stopResult: ISendEmailResponse = await sendServerStatusEmail('shutdown');
+        const stopResult = await sendServerStatusEmail('shutdown');
         console.log('Server Shutdown Email Send Result:', stopResult.sent);
 
         res.json([

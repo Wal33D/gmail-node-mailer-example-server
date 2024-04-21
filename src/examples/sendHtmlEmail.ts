@@ -31,7 +31,7 @@
  * @returns {Promise<ISendEmailResponse>} - Asynchronously sends an email and returns a promise that resolves with the outcome of the email sending operation, detailing success or failure information.
  */
 
-import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer';
 
 export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
     // Define the recipient's email address to whom the welcome email will be sent.

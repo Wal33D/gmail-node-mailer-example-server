@@ -36,7 +36,7 @@
 
 import fs from 'fs';
 import util from 'util';
-import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer';
 
 export async function sendServerStatusEmail(status: 'start' | 'shutdown'): Promise<ISendEmailResponse> {
     // Define the recipient's email address to whom the server status will be sent.

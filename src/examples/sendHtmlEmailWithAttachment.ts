@@ -34,7 +34,7 @@
 
 import fs from 'fs';
 import util from 'util';
-import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer';
 
 export async function sendHtmlEmailWithAttachment(): Promise<ISendEmailResponse> {
 

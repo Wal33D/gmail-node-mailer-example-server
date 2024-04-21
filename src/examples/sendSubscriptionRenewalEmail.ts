@@ -36,7 +36,7 @@
 
 import fs from 'fs';
 import util from 'util';
-import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer';
 
 export async function sendSubscriptionRenewalEmail(): Promise<ISendEmailResponse> {
    // Define the recipient's email address to whom the renewal confirmation email will be sent.
