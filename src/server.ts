@@ -131,6 +131,29 @@ app.get('/simulate-server-status', async (req, res) => {
     }, 2000); // 2000 milliseconds delay
 });
 
+const fetch = require('node-fetch'); 
+
+app.get('/npm-downloads', async (req, res) => {
+    try {
+        // Replace 'last-week' with 'last-day' or 'last-month' as needed
+        const response = await fetch('https://api.npmjs.org/downloads/point/last-week/gmail-node-mailer');
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
+        }
+
+        res.json({ downloads: data.downloads });
+    } catch (error) {
+        console.error('Failed to fetch npm downloads:', error);
+        res.status(500).send('Failed to fetch download data');
+    }
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
+
 // Open browser window on server start
 const server = app.listen(PORT, () => {
     console.log(`[Gmail-Node-Mailer Test Server] - Server is listening on port: ${PORT}`);
