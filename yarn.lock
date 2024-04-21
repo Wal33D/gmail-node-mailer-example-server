@@ -621,10 +621,10 @@ glob-parent@~5.1.2:
   dependencies:
     is-glob "^4.0.1"
 
-gmail-node-mailer@^1.8.5:
-  version "1.8.6"
-  resolved "https://registry.yarnpkg.com/gmail-node-mailer/-/gmail-node-mailer-1.8.6.tgz#b202c92bc3f62721fddb666aca343f5e18f5482e"
-  integrity sha512-uU2xzuX8Fz0sj1cKr5exCp6KMqJPe++hwsYuGqoJP85/bUOzUU1FHnBiejPDFZ07g/PVCKZMkE7BE9Tuig9q0g==
+gmail-node-mailer@^1.8.63:
+  version "1.8.63"
+  resolved "https://registry.yarnpkg.com/gmail-node-mailer/-/gmail-node-mailer-1.8.63.tgz#5089bc1be1e488442cdcefb95ce96268ec0e7678"
+  integrity sha512-z/MVLQxxrPRfm2pWPyiVob3x0wIJEDfjhAbLb2y5L2orGRV+zWOob77MGAk5SaHYx7FgRL8CSB7LiCtkF2haWg==
   dependencies:
     googleapis "^134.0.0"
 
