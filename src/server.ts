@@ -133,16 +133,55 @@ app.get('/simulate-server-status', async (req, res) => {
 });
 
 app.get('/npm-downloads', async (req, res) => {
-    try {
-        // Replace 'last-week' with 'last-day' or 'last-month' as needed
-        const response = await fetch('https://api.npmjs.org/downloads/point/last-week/gmail-node-mailer');
-        const data = await response.json();
+    const packageName = 'gmail-node-mailer'; // Set the package name here
 
-        if (data.error) {
-            throw new Error(data.error);
+    try {
+        // Fetch package metadata from the npm registry
+        const metadataResponse = await fetch(`https://registry.npmjs.org/${packageName}`);
+        const metadata = await metadataResponse.json();
+        
+        if (metadata.error) {
+            throw new Error(metadata.error);
         }
 
-        res.json({ downloads: data.downloads });
+        // Extract necessary information from metadata
+        const latestVersion = metadata['dist-tags'].latest;
+        const versionData = metadata.versions[latestVersion];
+        const firstPublishDate = new Date(metadata.time.created);
+        const lastUpdated = metadata.time[latestVersion];
+
+        // License, repository URL, and author data
+        const license = versionData.license || 'No license specified';
+        const repositoryUrl = versionData.repository?.url || 'No repository URL';
+        const author = versionData.author?.name || 'No author specified';
+
+        const startDate = firstPublishDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+        const endDate = new Date().toISOString().slice(0, 10); // Today's date in YYYY-MM-DD format
+
+        // Fetch download data from the first publish date to today
+        const downloadsResponse = await fetch(`https://api.npmjs.org/downloads/range/${startDate}:${endDate}/${packageName}`);
+        const downloadData = await downloadsResponse.json();
+console.log(downloadData, metadata)
+        if (downloadData.error) {
+            throw new Error(downloadData.error);
+        }
+
+        // Calculate the total downloads by summing up each day's downloads
+        let totalDownloads = 0;
+        downloadData.downloads.forEach((day: { downloads: number; }) => {
+            totalDownloads += day.downloads;
+        });
+
+        // Send the total downloads, first publish date, latest version, last updated date, and additional metadata to the client
+        res.json({
+            totalDownloads: totalDownloads,
+            publishDate: firstPublishDate.toISOString().slice(0, 10),
+            latestVersion: latestVersion,
+            lastUpdated: new Date(lastUpdated).toISOString().slice(0, 10),
+            license: license,
+            repositoryUrl: repositoryUrl,
+            author: author
+        });
     } catch (error) {
         console.error('Failed to fetch npm downloads:', error);
         res.status(500).send('Failed to fetch download data');
