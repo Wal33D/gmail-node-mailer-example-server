@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 // Define interfaces for the structure of the metadata and download data from npm
 interface Metadata {
     'dist-tags': { latest: string };
@@ -14,8 +12,9 @@ interface DownloadData {
 
 // Function to fetch data from a URL
 const fetchData = async (url: string): Promise<any> => {
+    const { default: fetch } = await import('node-fetch');
     const response = await fetch(url);
-    const data:any = await response.json();
+    const data: any = await response.json();
     if (data.error) {
         throw new Error(data.error);
     }
