@@ -1,9 +1,9 @@
-import { Router } from 'express';
 import fs from 'fs';
 import path from 'path';
 
-import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
+import { Router } from 'express';
 
+import { ISendEmailResponse } from 'gmail-node-mailer';
 import { sendHtmlEmail } from './examples/sendHtmlEmail';
 import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
 import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
@@ -11,7 +11,7 @@ import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
 import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
 import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
 
-import { fetchPackageDetails } from './helpers/npmPackageDetails';
+import { fetchPackageDetails } from './npm/packageDetails';
 
 export const router = Router();
 
@@ -56,7 +56,7 @@ router.get('/simulate-server-status', async (req, res) => {
             { operation: 'Server Start', ...startResult },
             { operation: 'Server Shutdown', ...stopResult }
         ]);
-    }, 2000); // 2 seconds delay
+    }, 500);
 });
 
 // Endpoint for getting package version
