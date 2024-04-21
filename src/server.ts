@@ -35,6 +35,7 @@ import path from 'path';
 import opener from 'opener';
 import express from 'express';
 import serveIndex from 'serve-index';
+const fetch = require('node-fetch'); 
 
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
@@ -130,8 +131,6 @@ app.get('/simulate-server-status', async (req, res) => {
         ]);
     }, 2000); // 2000 milliseconds delay
 });
-
-const fetch = require('node-fetch'); 
 
 app.get('/npm-downloads', async (req, res) => {
     try {
