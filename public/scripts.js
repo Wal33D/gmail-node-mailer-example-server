@@ -1,7 +1,7 @@
 function makeRequest(url) {
     // Display an alert to indicate the operation is in progress
     updateStatusMessage('Processing request...', 'warning');
-    
+
     fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -40,7 +40,7 @@ function appendRow(data, logElement) {
 }
 
 
-window.onload = function() {
+window.onload = function () {
     // Fetch the package version
     fetch('/package-version')
         .then(response => response.json())
@@ -73,5 +73,15 @@ window.onload = function() {
             console.error('Error fetching demo server version:', error);
             const demoVersionInfo = document.getElementById('demo-server-version-info');
             demoVersionInfo.textContent = 'Error loading version';
+        });
+        
+    fetch('/npm-downloads')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('npm-downloads-info').textContent = `Weekly Downloads: ${data.downloads}`;
+        })
+        .catch(error => {
+            console.error('Error fetching download data:', error);
+            document.getElementById('npm-downloads-info').textContent = 'Failed to load download data';
         });
 };
