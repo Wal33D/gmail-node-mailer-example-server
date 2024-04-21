@@ -35,7 +35,6 @@ import path from 'path';
 import opener from 'opener';
 import express from 'express';
 import serveIndex from 'serve-index';
-const fetch = require('node-fetch');
 
 import { ISendEmailResponse } from 'gmail-node-mailer/dist/types';
 
@@ -59,7 +58,7 @@ app.get('/package-version', (req, res) => {
     // Correctly point to the package.json within node_modules at the project root
     const packagePath = path.join(__dirname, '..', 'node_modules', 'gmail-node-mailer', 'package.json');
 
-    fs.readFile(packagePath, (err: any, data: any) => {
+    fs.readFile(packagePath, (err:any, data:any) => {
         if (err) {
             console.error('Error reading file:', err);
             return res.status(500).send('Error reading package version');
@@ -132,73 +131,19 @@ app.get('/simulate-server-status', async (req, res) => {
     }, 2000); // 2000 milliseconds delay
 });
 
-interface NpmPackageDetails {
-    packageName: string;
-    totalDownloads: number;
-    firstPublishDate: string;
-    latestVersion: string;
-    lastUpdated: string;
-    license: string;
-    npmUrl: string;
-    repositoryUrl: string;
-    authorName: string;
-    description: string;
-    keywords: string[];
-    readme: string; 
-}
+import { fetchPackageDetails } from './helpers/npmPackageDetails';
 
 app.get('/npm-package-details', async (req, res) => {
-    const packageName = 'gmail-node-mailer';
-
+    const packageName = process.env.PACKAGE_NAME || 'default-package-name';
     try {
-        const metadataUrl = `https://registry.npmjs.org/${packageName}`;
-        const metadata = await fetch(metadataUrl).then((res: { json: () => any; }) => res.json());
-
-        if (metadata.error) {
-            throw new Error(`Error fetching metadata: ${metadata.error}`);
-        }
-
-        const latestVersion = metadata['dist-tags'].latest;
-        const versionData = metadata.versions[latestVersion];
-        const license = versionData.license || 'No license specified';
-        const repositoryUrl = versionData.repository?.url || 'No repository URL';
-        const author = versionData.author?.name || 'No author specified';
-        const description = versionData.description || 'No description available';
-        const keywords = versionData.keywords || [];
-        const readme = metadata.readme || 'No README available';
-        const firstPublishDate = new Date(metadata.time.created).toISOString().slice(0, 10);
-        const currentDate = new Date().toISOString().slice(0, 10);
-        const downloadsUrl = `https://api.npmjs.org/downloads/range/${firstPublishDate}:${currentDate}/${packageName}`;
-        const downloadData = await fetch(downloadsUrl).then((res: { json: () => any; }) => res.json());
-
-        if (downloadData.error) {
-            throw new Error(`Error fetching download data: ${downloadData.error}`);
-        }
-
-        const totalDownloads = downloadData.downloads.reduce((sum: any, day: { downloads: any; }) => sum + day.downloads, 0);
-        const npmUrl = `https://www.npmjs.com/package/${packageName}`;
-
-        const response: NpmPackageDetails = {
-            packageName,
-            totalDownloads,
-            firstPublishDate,
-            latestVersion,
-            lastUpdated: new Date(metadata.time[latestVersion]).toISOString().slice(0, 10),
-            license,
-            npmUrl,
-            repositoryUrl,
-            authorName: author,
-            description,
-            keywords,
-            readme
-        };
-
-        res.json(response);
-    } catch (error: any) {
-        console.error(error.message);
-        res.status(500).json({ error: error.message });
+        const packageDetails = await fetchPackageDetails(packageName);
+        res.json(packageDetails);
+    } catch (error) {
+        console.error('Failed to fetch package details:', error);
+        res.status(500).json({ error: 'Failed to fetch package details' });
     }
 });
+
 
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');
