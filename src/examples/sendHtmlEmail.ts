@@ -38,6 +38,7 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
     const recipientEmail = 'waleed@glitchgaming.us';
     const subject = '🎉 HTML Email Demo with gmail-node-mailer!';
     const senderName = 'gmail-node-mailer';
+
     const message = `
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +50,7 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
         .container { max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
         .header { background-color: #003366; color: white; padding: 20px; text-align: center; }
         .content { padding: 30px; text-align: left; font-size: 16px; color: #333; }
+        .code { background-color: #e8f0fe; padding: 15px; font-family: monospace; color: #0056b3; border-left: 5px solid #0056b3; margin-top: 20px; }
         .footer { background-color: #003366; color: white; padding: 20px; text-align: center; }
         a { color: #FFD700; text-decoration: none; font-weight: bold; }
         a:hover { text-decoration: underline; }
@@ -64,7 +66,21 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
         </div>
         <div class="content">
             <p>Hello,</p>
-            <p>This email demonstrates how you can send HTML formatted messages using the gmail-node-mailer package. Experience seamless email integration with your applications.</p>
+            <p>This email demonstrates how you can send HTML formatted messages using the gmail-node-mailer package. Below is a simple example of how to use the package to send an email and handle the response:</p>
+            <pre class="code">const response = await global.gmailClient.sendEmail({
+    recipientEmail,
+    message,
+    subject,
+} as ISendEmailParams);
+
+console.log({
+  sent: true,
+  status: 200,
+  statusText: 'OK',
+  responseUrl: 'https://gmail.googleapis.com/gmail/v...',
+  message: 'Email successfully sent to user@domain.us.',
+  gmailResponse: {...} //Complete Gmail Response Object
+});</pre>
             <p>Your account is now fully activated, and you can begin exploring all our features.</p>
         </div>
         <div class="footer">
@@ -74,6 +90,7 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
 </body>
 </html>
     `;
+
     return await global.gmailClient.sendEmail({
         recipientEmail,
         senderName,
