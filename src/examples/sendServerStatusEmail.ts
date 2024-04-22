@@ -53,33 +53,28 @@ export async function sendServerStatusEmail(status: 'start' | 'shutdown'): Promi
     <html>
     <head>
         <style>
-            /* Basic reset and fonts setup */
-            body, html { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f4; }
-            /* Container for the email content */
-            .container { background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-            /* Styling for the header */
-            .header { background-color: #E0EFFF; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
-            h1 { color: #0A3E5D; font-size: 28px; margin: 0; }
-            /* Main content styles */
-            .status-details { background-color: #F8F8F8; padding: 20px; border-radius: 5px; margin-top: 20px; color: #333; }
-            p { font-size: 16px; line-height: 1.5; margin: 10px 0; }
-            .status-update { font-weight: 600; } /* Bolder font for important updates */
-            /* Footer styles */
-            .footer { font-size: 16px; text-align: center; padding: 20px; border-top: 1px solid #ccc; margin-top: 20px; }
-            a, .support-link { color: #0A3E5D; text-decoration: none; font-weight: 600; }
+            body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+            .container { background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+            h1 { color: #0A3E5D; font-size: 24px; }
+            p { color: #333333; font-size: 16px; }
+            .footer { font-size: 16px; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ccc; }
+            a { color: #0A3E5D; text-decoration: none; }
+            .header { background-color: #E0EFFF; padding: 10px 20px; border-radius: 8px 8px 0 0; }
+            .status-icon { font-size: 48px; }
             .footer a { color: #007bff; text-decoration: underline; }
-            /* Icon styles for fun and clear visual cues */
-            .status-icon { font-size: 48px; vertical-align: middle; }
+            .status-details { background-color: #F0F0F0; padding: 15px; border-radius: 5px; margin: 15px 0; }
+            .status-update { font-weight: bold; }
+            .support-link { font-weight: bold; }
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <h1><span class="status-icon">${status === 'start' ? '🚀' : '🌙'}</span> Server ${status === 'start' ? 'Starting' : 'Shutting Down'}</h1>
+                <h1><span class="status-icon">${status === 'start' ? '🚀' : '🌙'}</span> ${status === 'start' ? 'Server Starting' : 'Server Shutting Down'}</h1>
             </div>
             <div class="status-details">
                 <p>The server is ${status === 'start' ? 'currently starting up' : 'currently shutting down'} as of ${formattedTime}.</p>
-                <p class="status-update">This email confirms the ${status === 'start' ? 'activation' : 'deactivation'} of the server processes. For more details, please check the server dashboard or contact support if you notice any issues.</p>
+                <p class="status-update">This email is to confirm the ${status === 'start' ? 'activation' : 'deactivation'} of the server processes. Please check the server dashboard for more details or contact support if you notice any issues.</p>
             </div>
             <footer>
                 <p>Need help? <a href="mailto:support@somnuslabs.com" class="support-link">Contact support</a> if you have any concerns or require assistance.</p>

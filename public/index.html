@@ -61,24 +61,26 @@
                         </div>
                         <div class="card-body">
                             <div class="email-actions">
-                                <button onclick="makeRequest('/simulate-server-status')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-envelope-fill"></i> Simulate
-                                    Server Status Emails</button>
-                                <button onclick="makeRequest('/send-html-email')" class="btn btn-primary w-100 mb-2"><i
-                                        class="bi bi-send-fill"></i> Send HTML Email</button>
-                                <button onclick="makeRequest('/send-plain-text-email')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-chat-text-fill"></i> Send Plain
-                                    Text Email</button>
-                                <button onclick="makeRequest('/send-html-email-attachment')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-paperclip"></i> Send HTML Email
-                                    with Attachment</button>
-                                <button onclick="makeRequest('/send-subscription-renewal')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-arrow-repeat"></i> Send
-                                    Subscription Renewal Email</button>
-                                <button onclick="makeRequest('/send-new-purchase')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-bag-fill"></i> Send New Purchase
-                                    Email</button>
+                                <button onclick="makeRequest('/simulate-server-status')" class="btn btn-primary w-100 mb-2">
+                                    <i class="bi bi-envelope-fill"></i> Trigger Server Status Notification
+                                </button>
+                                <button onclick="makeRequest('/send-html-email')" class="btn btn-primary w-100 mb-2">
+                                    <i class="bi bi-send-fill"></i> Dispatch Rich Format Email
+                                </button>
+                                <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-primary w-100 mb-2">
+                                    <i class="bi bi-chat-text-fill"></i> Send Basic Text Email
+                                </button>
+                                <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-primary w-100 mb-2">
+                                    <i class="bi bi-paperclip"></i> Send Email with File Attachment
+                                </button>
+                                <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-primary w-100 mb-2">
+                                    <i class="bi bi-arrow-repeat"></i> Renew Subscription Notification
+                                </button>
+                                <button onclick="makeRequest('/send-new-purchase')" class="btn btn-primary w-100 mb-2">
+                                    <i class="bi bi-bag-fill"></i> Confirm New Purchase
+                                </button>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
