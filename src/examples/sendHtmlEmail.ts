@@ -38,7 +38,6 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
     const recipientEmail = 'waleed@glitchgaming.us';
     const subject = '🎉 HTML Email Demo with gmail-node-mailer!';
     const senderName = 'gmail-node-mailer';
-
     const message = `
     <!DOCTYPE html>
     <html lang="en">
@@ -46,16 +45,16 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
-            .container { max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
-            .header { background-color: #004488; color: white; padding: 20px; text-align: center; }
-            .content { padding: 20px; text-align: left; font-size: 14px; color: #333; }
-            .code { background-color: #eef2f7; padding: 10px; font-family: 'Courier New', monospace; color: #0077CC; border-left: 4px solid #0077CC; margin-top: 20px; }
-            .footer { background-color: #004488; color: white; padding: 20px; text-align: center; }
-            a { color: #FFD740; text-decoration: none; font-weight: bold; }
+            body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; }
+            .container { max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+            .header { background-color: #003366; color: white; padding: 20px; text-align: center; }
+            .content { padding: 30px; text-align: left; font-size: 16px; color: #333; }
+            .code { background-color: #e8f0fe; padding: 15px; font-family: monospace; color: #0056b3; border-left: 5px solid #0056b3; margin-top: 20px; }
+            .footer { background-color: #003366; color: white; padding: 20px; text-align: center; }
+            a { color: #FFD700; text-decoration: none; font-weight: bold; }
             a:hover { text-decoration: underline; }
             @media (max-width: 600px) {
-                .header, .content, .footer { padding: 10px; }
+                .header, .content, .footer { padding: 15px; }
             }
         </style>
     </head>
@@ -66,8 +65,20 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
             </div>
             <div class="content">
                 <p>Hello,</p>
-                <p>Before you can send emails, you need to initialize the gmail-node-mailer client. Below is how you set up the email client:</p>
-                <pre class="code">const { status, gmailClient, message } = await initializeEmailClient();
+                <p>Before you can send emails, you need to initialize the gmail-node-mailer client. Here’s how to configure your client securely:</p>
+                <ul>
+                    <li>Import the necessary module and initialize the GmailMailer:</li>
+                </ul>
+                <pre class="code">
+    import { GmailMailer } from 'gmail-node-mailer';
+    const gmailMailer = new GmailMailer();
+    
+    const gmailSenderEmail = process.env.GMAIL_MAILER_SENDER_EMAIL; // Your Gmail address
+    const gmailServiceAccount = process.env.GMAIL_MAILER_SERVICE_ACCOUNT ? 
+        JSON.parse(process.env.GMAIL_MAILER_SERVICE_ACCOUNT) : 
+        JSON.parse(fs.readFileSync(process.env.GMAIL_MAILER_SERVICE_ACCOUNT_PATH, 'utf8')); // Or from a file path
+    
+    const { status, gmailClient, message } = await initializeEmailClient(gmailSenderEmail, gmailServiceAccount);
     if (status) {
         console.log('Initialization successful!');
     } else {
@@ -75,19 +86,19 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
     }</pre>
                 <p>Once initialized, sending an email is straightforward:</p>
                 <pre class="code">const response = await gmailClient.sendEmail({
-        recipientEmail,
-        message,
-        subject,
-    } as ISendEmailParams);
+        recipientEmail: 'recipient@example.com',
+        message: 'Hello, this is a test message sent from gmail-node-mailer!',
+        subject: 'Test Email'
+    });
     console.log(response);</pre>
                 <p>Here's an example of what the response might look like:</p>
                 <pre class="code">{
-    sent: true,
-    status: 200,
-    statusText: 'OK',
-    responseUrl: 'https://gmail.googleapis.com/gmail/v...',
-    message: 'Email successfully sent to waleed@glitchgaming.us.',
-    gmailResponse: {/* Gmail Response Object */}
+        sent: true,
+        status: 200,
+        statusText: 'OK',
+        responseUrl: 'https://gmail.googleapis.com/gmail/v...',
+        message: 'Email successfully sent to recipient@example.com.',
+        gmailResponse: {/* Gmail Response Object */}
     }</pre>
                 <p>Your account is now fully activated, and you can begin exploring all our features.</p>
             </div>
@@ -97,8 +108,7 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
         </div>
     </body>
     </html>
-    
-    `;
+    `;    
 
     return await global.gmailClient.sendEmail({
         recipientEmail,
