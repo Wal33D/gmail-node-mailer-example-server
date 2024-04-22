@@ -76,7 +76,7 @@ window.onload = function () {
         });
         
 
-    fetch('http://localhost:6338/npm-package-details')
+        fetch('http://localhost:6338/npm-package-details')
         .then(response => response.json())
         .then(data => {
             document.getElementById('package-name').innerHTML = `<strong>Package Name:</strong> ${data.packageName}`;
@@ -85,6 +85,10 @@ window.onload = function () {
             document.getElementById('package-description').innerHTML = `<strong>Description:</strong> ${data.description}`;
             document.getElementById('package-url').href = data.npmUrl;
             document.getElementById('package-url').innerHTML = 'Visit npm Package Page';
+
+            let keywordsHtml = '<strong>Keywords:</strong> ';
+            keywordsHtml += data.keywords.join(', ');
+            document.getElementById('package-keywords').innerHTML = keywordsHtml;
         })
         .catch(error => {
             console.error('Error fetching package details:', error);
