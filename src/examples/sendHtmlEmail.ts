@@ -65,24 +65,41 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
             </div>
             <div class="content">
                 <p>Hello,</p>
-                <p>Before you can send emails, you need to initialize the gmail-node-mailer client. You will need to provide either a service account as JSON, or a file path to a JSON file, along with your Gmail sender email:</p>
+                <p>Before you can send emails, you need to initialize the gmail-node-mailer client. This involves setting up the sender's email and the service account configuration. The package allows two ways to specify the service account:</p>
+                <ul>
+                    <li>Directly by providing the JSON data through an environment variable.</li>
+                    <li>By specifying a file path to the JSON file that contains the service account details.</li>
+                </ul>
+                <p>Here’s how you can configure your client securely using one of these methods:</p>
                 <pre class="code">import { GmailMailer } from 'gmail-node-mailer';
     const gmailMailer = new GmailMailer();
     
-    const initializationParams = {
-        gmailSenderEmail: process.env.GMAIL_MAILER_SENDER_EMAIL,
-        gmailServiceAccountPath: process.env.GMAIL_MAILER_SERVICE_ACCOUNT_PATH // or gmailServiceAccount
-    };
+    const gmailSenderEmail = process.env.GMAIL_MAILER_SENDER_EMAIL;
+    let gmailServiceAccount;
     
-    const { gmailClient } = await gmailMailer.initializeClient(initializationParams);
+    if (process.env.GMAIL_MAILER_SERVICE_ACCOUNT) {
+        gmailServiceAccount = JSON.parse(process.env.GMAIL_MAILER_SERVICE_ACCOUNT);
+    } else {
+        gmailServiceAccount = JSON.parse(fs.readFileSync(process.env.GMAIL_MAILER_SERVICE_ACCOUNT_PATH, 'utf8'));
+    }
     
-    const response = await gmailClient.sendEmail({
+    const { status, gmailClient, message } = await initializeEmailClient({
+        gmailServiceAccount,
+        gmailSenderEmail
+    });
+    
+    if (status) {
+        console.log('Initialization successful!');
+    } else {
+        console.error('Initialization failed:', message);
+    }</pre>
+                <p>Once initialized, sending an email is straightforward:</p>
+                <pre class="code">const response = await gmailClient.sendEmail({
         recipientEmail: 'recipient@example.com',
         message: 'Hello, this is a test message sent from gmail-node-mailer!',
         subject: 'Test Email'
     });
-    console.log(response);
-                </pre>
+    console.log(response);</pre>
                 <p>Here's an example of what the response might look like:</p>
                 <pre class="code">{
         sent: true,
@@ -101,7 +118,6 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
     </body>
     </html>
     `;
-    
     
     return await global.gmailClient.sendEmail({
         recipientEmail,
