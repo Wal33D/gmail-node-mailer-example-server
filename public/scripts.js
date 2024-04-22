@@ -41,6 +41,7 @@ function appendRow(data, logElement) {
 
 
 window.onload = function () {
+    
     var guideButton = document.querySelector('[data-target="#setupGuideModal"]');
     guideButton.addEventListener('click', function () {
         fetch('/files/ServiceAccountSetupGuide.md')
@@ -53,6 +54,26 @@ window.onload = function () {
             .catch(error => {
                 document.getElementById('markdownContainer').innerHTML = '<p>Error loading the guide.</p>';
                 console.error('Error loading the markdown file:', error);
+            });
+    });
+    
+    $('#fileDirectoryModal').on('show.bs.modal', function() {
+        fetch('http://localhost:6338/files')  // Update URL as needed
+            .then(response => response.json())  // Adjust this if the endpoint returns HTML or text
+            .then(data => {
+                var content = '';
+                if (Array.isArray(data)) {
+                    data.forEach(file => {
+                        content += `<p>${file.name}</p>`;  // Customize as per your file object structure
+                    });
+                } else {
+                    content = '<p>No files found.</p>';
+                }
+                document.getElementById('fileDirectoryContainer').innerHTML = content;
+            })
+            .catch(error => {
+                console.error('Error loading files:', error);
+                document.getElementById('fileDirectoryContainer').innerHTML = 'Failed to load files.';
             });
     });
     // Fetch the package version
@@ -121,4 +142,16 @@ function copyToClipboard() {
 
     // Optional: Show an alert or change button text to confirm copied text
     alert("Copied to clipboard!");
+}
+
+function goBackIframe() {
+    var iframe = document.getElementById('fileDirectoryFrame');
+    if (iframe.contentWindow.history.length > 1) {
+        iframe.contentWindow.history.back();
+    }
+}
+
+function goHomeIframe() {
+    var iframe = document.getElementById('fileDirectoryFrame');
+    iframe.src = "/files";  // Reset to the home directory listing
 }

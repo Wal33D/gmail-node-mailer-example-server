@@ -128,10 +128,9 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="/files" class="d-block" target="_blank"><i class="fas fa-folder-open"></i>
-                                    Sample
-                                    Files
-                                    Directory</a>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#fileDirectoryModal">
+                                    <i class="fas fa-folder-open"></i> View Sample Files Directory
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -233,10 +232,36 @@ GMAIL_MAILER_SERVICE_ACCOUNT_PATH=<path-to-your-service-account-file>
                         <button class="btn btn-outline-primary mt-2" onclick="copyToClipboard()">Copy to
                             Clipboard</button>
                         <!-- Updated download link with comments -->
-                        <a href="data:text/plain;charset=utf-8,GMAIL_MAILER_SENDER_EMAIL%3D%3Cyour-email-here%3E%0AGMAIL_MAILER_SERVICE_ACCOUNT_PATH%3D%3Cpath-to-your-service-account-file%3E%0A%23%20Or%20you%20can%20use%0A%23%20GMAIL_MAILER_SERVICE_ACCOUNT%3D%3Cyour-json-credentials-here%3E" download=".env.sample" class="btn btn-outline-secondary mt-2">Download as .env</a>
+                        <a href="data:text/plain;charset=utf-8,GMAIL_MAILER_SENDER_EMAIL%3D%3Cyour-email-here%3E%0AGMAIL_MAILER_SERVICE_ACCOUNT_PATH%3D%3Cpath-to-your-service-account-file%3E%0A%23%20Or%20you%20can%20use%0A%23%20GMAIL_MAILER_SERVICE_ACCOUNT%3D%3Cyour-json-credentials-here%3E"
+                            download=".env.sample" class="btn btn-outline-secondary mt-2">Download as .env</a>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sample Files Directory Modal -->
+        <div class="modal fade" id="fileDirectoryModal" tabindex="-1" role="dialog"
+            aria-labelledby="fileDirectoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fileDirectoryModalLabel">Sample Files Directory</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Iframe to render the directory contents -->
+                        <iframe id="fileDirectoryFrame" src="/files"
+                            style="width: 100%; height: 400px; border: none;"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Navigation Buttons -->
+                        <button type="button" class="btn btn-primary mt-2" onclick="goBackIframe()">Back</button>
+                        <button type="button" class="btn btn-secondary mt-2" onclick="goHomeIframe()">Home</button>
+                        <button type="button" class="btn btn-secondary mt-2" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
