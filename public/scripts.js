@@ -42,7 +42,7 @@ function appendRow(data, logElement) {
 
 window.onload = function () {
     var guideButton = document.querySelector('[data-target="#setupGuideModal"]');
-    guideButton.addEventListener('click', function() {
+    guideButton.addEventListener('click', function () {
         fetch('/files/ServiceAccountSetupGuide.md')
             .then(response => response.text())
             .then(text => {
@@ -88,9 +88,9 @@ window.onload = function () {
             const demoVersionInfo = document.getElementById('demo-server-version-info');
             demoVersionInfo.textContent = 'Error loading version';
         });
-        
 
-        fetch('http://localhost:6338/npm-package-details')
+
+    fetch('http://localhost:6338/npm-package-details')
         .then(response => response.json())
         .then(data => {
             document.getElementById('package-name').innerHTML = `<strong>Package Name:</strong> ${data.packageName}`;
@@ -112,3 +112,13 @@ window.onload = function () {
             document.getElementById('package-name').innerHTML = '<strong>Error:</strong> Failed to load package details.';
         });
 };
+
+function copyToClipboard() {
+    var copyText = document.getElementById("envText");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+    document.execCommand("copy");
+
+    // Optional: Show an alert or change button text to confirm copied text
+    alert("Copied to clipboard!");
+}
