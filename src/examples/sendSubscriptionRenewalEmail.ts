@@ -43,31 +43,41 @@ export async function sendSubscriptionRenewalEmail(): Promise<ISendEmailResponse
     const currentDate = new Date();
     const formattedDate = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
     const subject = '🎥 StreamBox Subscription Renewed!';
+    const senderName = 'StreamBox Subscription';
+
     const message = `
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; color: #333; }
-        .container { max-width: 600px; margin: auto; padding: 20px; background: #fff; border-radius: 8px; }
-        h1 { color: #E50914; }
-        p { margin: 10px 0; }
-        footer { color: #888; font-size: 16px; text-align: center; margin-top: 20px; }
-    </style>
+<style>
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #141414; color: #fff; }
+    .container { max-width: 800px; margin: 20px auto; background-color: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); color: #fff; }
+    .header { background-color: #E50914; padding: 16px 20px; font-size: 24px; font-weight: bold; text-align: center; }
+    .content { padding: 20px; text-align: center; background-color: #fff; color: #000; } /* Updated background and text color */
+    h1 { margin: 0; color: #000; } /* Ensure header colors are black for visibility */
+    p { margin-bottom: 10px; color: #000; } /* Ensure paragraph text is black */
+    .footer { background-color: #181818; font-size: 16px; text-align: center; padding: 20px; }
+    .footer a, .footer a:visited { color: #FFA500!important; text-decoration: none; }
+</style>
 </head>
 <body>
     <div class="container">
-        <h1>🌟 Welcome Back to StreamBox!</h1>
-        <p>Hello,</p>
-        <p>We're thrilled to let you know that your StreamBox subscription has been successfully renewed as of <strong>${formattedDate}</strong>.</p>
-        <p>Continue enjoying unlimited movies and TV shows without interruption. Attached are your detailed invoice and usage statistics for your records.</p>
-        <footer>Thanks for choosing StreamBox! 🎬<br>Contact us anytime at support@streambox.com</footer>
+        <div class="header">🌟 StreamBox Subscription Renewal</div>
+        <div class="content">
+            <h1>Welcome Back!</h1>
+            <p>Hello,</p>
+            <p>We're thrilled to let you know that your StreamBox subscription has been successfully renewed as of <strong>${formattedDate}</strong>.</p>
+            <p>Continue enjoying unlimited movies and TV shows without interruption. Attached are your detailed invoice and usage statistics for your records.</p>
+        </div>
+        <div class="footer">
+            <p>Thanks for choosing StreamBox! 🎬<br>Contact us anytime at <a href="mailto:support@streambox.com">support@streambox.com</a></p>
+        </div>
     </div>
 </body>
 </html>
     `;
 
-    const pdfFilePath = './dummyFiles/StreamBox-Invoice.pdf';
+    const pdfFilePath = './dummyFiles/SampleInvoice.pdf';
     const pdfData = await util.promisify(fs.readFile)(pdfFilePath);
     const pdfBase64 = pdfData.toString('base64');
 
@@ -89,6 +99,7 @@ export async function sendSubscriptionRenewalEmail(): Promise<ISendEmailResponse
 
     return await global.gmailClient.sendEmail({
         recipientEmail,
+        senderName,
         message,
         subject,
         attachments
