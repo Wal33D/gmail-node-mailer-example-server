@@ -19,38 +19,76 @@
     </nav>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-4">
+
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="email-actions">
+                            <button onclick="makeRequest('/simulate-server-status')"
+                                class="btn btn-primary w-100 mb-2"><i class="bi bi-envelope-fill"></i> Simulate
+                                Server Status Emails</button>
+                            <button onclick="makeRequest('/send-html-email')" class="btn btn-primary w-100 mb-2"><i
+                                    class="bi bi-send-fill"></i> Send HTML Email</button>
+                            <button onclick="makeRequest('/send-plain-text-email')"
+                                class="btn btn-primary w-100 mb-2"><i class="bi bi-chat-text-fill"></i> Send Plain
+                                Text Email</button>
+                            <button onclick="makeRequest('/send-html-email-attachment')"
+                                class="btn btn-primary w-100 mb-2"><i class="bi bi-paperclip"></i> Send HTML Email
+                                with Attachment</button>
+                            <button onclick="makeRequest('/send-subscription-renewal')"
+                                class="btn btn-primary w-100 mb-2"><i class="bi bi-arrow-repeat"></i> Send
+                                Subscription Renewal Email</button>
+                            <button onclick="makeRequest('/send-new-purchase')" class="btn btn-primary w-100 mb-2"><i
+                                    class="bi bi-bag-fill"></i> Send New Purchase
+                                Email</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div id="statusMessage" class="alert alert-primary" role="alert">
+                            Ready to send emails...
+                        </div>
+                        <div class="mb-4">
+                            <p>This server demonstrates the capabilities of the <strong>gmail-node-mailer</strong>
+                                package, which simplifies the process of sending emails via Gmail API in Node.js
+                                applications.</p>
+                            <p>This particular server instance is part of the examples provided in the <a
+                                    href="https://github.com/our-node-packages/gmail-node-mailer-example-server"
+                                    target="_blank">Example Server GitHub repository</a>.</p>
+                        </div>
+                        <div id="log" class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Operation</th>
+                                        <th>Sent</th>
+                                        <th>Status</th>
+                                        <th>Status Text</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Table data will be dynamically filled -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
                 <div class="mb-4">
                     <div class="card">
                         <div class="card-header">
                             <h4>Demo Operations</h4>
                         </div>
                         <div class="card-body">
-                            <div class="email-actions">
-                                <button onclick="makeRequest('/simulate-server-status')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-envelope-fill"></i> Simulate
-                                    Server Status Emails</button>
-                                <button onclick="makeRequest('/send-html-email')" class="btn btn-primary w-100 mb-2"><i
-                                        class="bi bi-send-fill"></i> Send HTML Email</button>
-                                <button onclick="makeRequest('/send-plain-text-email')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-chat-text-fill"></i> Send Plain
-                                    Text Email</button>
-                                <button onclick="makeRequest('/send-html-email-attachment')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-paperclip"></i> Send HTML Email
-                                    with Attachment</button>
-                                <button onclick="makeRequest('/send-subscription-renewal')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-arrow-repeat"></i> Send
-                                    Subscription Renewal Email</button>
-                                <button onclick="makeRequest('/send-new-purchase')"
-                                    class="btn btn-primary w-100 mb-2"><i class="bi bi-bag-fill"></i> Send New Purchase
-                                    Email</button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h4>About</h4>
+                        <h4>github</h4>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <a href="https://github.com/our-node-packages/gmail-node-mailer" class="d-inline-block"
                                 target="_blank">
@@ -59,89 +97,63 @@
                             <span id="package-version-info" class="badge badge-info ml-2">Loading version...</span>
                         </div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server"
-                            class="d-inline-block" target="_blank">
-                            <i class="fab fa-github"></i> gmail-node-mailer demo server
-                        </a>
-                        <span id="demo-server-version-info" class="badge badge-info ml-2">Loading version...</span>
-                    </div>
+                            <a href="https://github.com/our-node-packages/gmail-node-mailer-example-server"
+                                class="d-inline-block" target="_blank">
+                                <i class="fab fa-github"></i> gmail-node-mailer demo server
+                            </a>
+                            <span id="demo-server-version-info" class="badge badge-info ml-2">Loading version...</span>
+                        </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <span class="badge badge-secondary">Node.js</span>
-                            <span class="badge badge-secondary">npm</span>
-                            <hr />
+                        <div class="card">
+                            <div class="card-body">
+                                <span class="badge badge-secondary">Node.js</span>
+                                <span class="badge badge-secondary">npm</span>
+                                <hr />
+                                <div id="npm-downloads-info">Loading downloads...</div>
 
-                            <!-- GitHub Star Button -->
-                            <a class="github-button" href="https://github.com/our-node-packages/gmail-node-mailer"
-                                data-icon="octicon-star" data-size="large" data-show-count="true"
-                                aria-label="Star our-node-packages/gmail-node-mailer on GitHub">Star</a>
+                                <!-- GitHub Star Button -->
+                                <a class="github-button" href="https://github.com/our-node-packages/gmail-node-mailer"
+                                    data-icon="octicon-star" data-size="large" data-show-count="true"
+                                    aria-label="Star our-node-packages/gmail-node-mailer on GitHub">Star</a>
 
-                            <a class="github-button"
-                                href="https://github.com/our-node-packages/gmail-node-mailer/subscription"
-                                data-icon="octicon-eye" data-size="large" data-show-count="true"
-                                aria-label="Watch our-node-packages/gmail-node-mailer on GitHub">Watch</a>
+                                <a class="github-button"
+                                    href="https://github.com/our-node-packages/gmail-node-mailer/subscription"
+                                    data-icon="octicon-eye" data-size="large" data-show-count="true"
+                                    aria-label="Watch our-node-packages/gmail-node-mailer on GitHub">Watch</a>
 
-                            <!-- GitHub Issue Button -->
-                            <a class="github-button"
-                                href="https://github.com/our-node-packages/gmail-node-mailer/issues"
-                                data-icon="octicon-issue-opened" data-size="large" data-show-count="true"
-                                aria-label="Issue on GitHub">Issue</a>
+                                <!-- GitHub Issue Button -->
+                                <a class="github-button"
+                                    href="https://github.com/our-node-packages/gmail-node-mailer/issues"
+                                    data-icon="octicon-issue-opened" data-size="large" data-show-count="true"
+                                    aria-label="Issue on GitHub">Issue</a>
 
-                            <!-- GitHub Fork Button -->
-                            <a class="github-button" href="https://github.com/our-node-packages/gmail-node-mailer/fork"
-                                data-icon="octicon-repo-forked" data-size="large" data-show-count="true"
-                                aria-label="Fork on GitHub">Fork</a>
-
+                                <!-- GitHub Fork Button -->
+                                <a class="github-button"
+                                    href="https://github.com/our-node-packages/gmail-node-mailer/fork"
+                                    data-icon="octicon-repo-forked" data-size="large" data-show-count="true"
+                                    aria-label="Fork on GitHub">Fork</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <a href="https://www.npmjs.com/package/gmail-node-mailer" class="d-block" target="_blank"><i
-                                    class="fab fa-npm"></i> npm Package</a>
-                            <a href="/files" class="d-block" target="_blank"><i class="fas fa-folder-open"></i>
-                                Sample
-                                Files
-                                Directory</a>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>npm</h4>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="https://www.npmjs.com/package/gmail-node-mailer" class="d-block"
+                                    target="_blank"><i class="fab fa-npm"></i> npm Package</a>
+                                <a href="/files" class="d-block" target="_blank"><i class="fas fa-folder-open"></i>
+                                    Sample
+                                    Files
+                                    Directory</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <div id="statusMessage" class="alert alert-primary" role="alert">
-                        Ready to send emails...
-                    </div>
-                    <div class="mb-4">
-                        <p>This server demonstrates the capabilities of the <strong>gmail-node-mailer</strong>
-                            package, which simplifies the process of sending emails via Gmail API in Node.js
-                            applications.</p>
-                        <p>This particular server instance is part of the examples provided in the <a
-                                href="https://github.com/our-node-packages/gmail-node-mailer-example-server"
-                                target="_blank">Example Server GitHub repository</a>.</p>
-                    </div>
-                    <div id="log" class="table-responsive">
-                        <table class="table table-hover">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Operation</th>
-                                    <th>Sent</th>
-                                    <th>Status</th>
-                                    <th>Status Text</th>
-                                    <th>Message</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Table data will be dynamically filled -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 

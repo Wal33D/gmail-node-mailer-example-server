@@ -5,39 +5,38 @@ import { Router } from 'express';
 
 import { sendHtmlEmail } from './examples/sendHtmlEmail';
 import { sendPlainTextEmail } from './examples/sendPlainTextEmail';
+import { fetchPackageDetails } from './npm/packageDetails';
 import { sendNewPurchaseEmail } from './examples/sendNewPurchaseEmail';
 import { sendServerStatusEmail } from './examples/sendServerStatusEmail';
 import { sendHtmlEmailWithAttachment } from './examples/sendHtmlEmailWithAttachment';
 import { sendSubscriptionRenewalEmail } from './examples/sendSubscriptionRenewalEmail';
-
-import { fetchPackageDetails } from './npm/packageDetails';
 
 export const router = Router();
 
 // Email sending endpoints
 router.get('/send-html-email', async (req, res) => {
     const result = await sendHtmlEmail();
-    res.json(result);
+    res.json({ operation: 'Send HTML Email', ...result });
 });
 
 router.get('/send-plain-text-email', async (req, res) => {
     const result = await sendPlainTextEmail();
-    res.json(result);
+    res.json({ operation: 'Send Plain Text Email', ...result });
 });
 
 router.get('/send-html-email-attachment', async (req, res) => {
     const result = await sendHtmlEmailWithAttachment();
-    res.json(result);
+    res.json({ operation: 'Send HTML Email with Attachment', ...result });
 });
 
 router.get('/send-subscription-renewal', async (req, res) => {
     const result = await sendSubscriptionRenewalEmail();
-    res.json(result);
+    res.json({ operation: 'Send Subscription Renewal Email', ...result });
 });
 
 router.get('/send-new-purchase', async (req, res) => {
     const result = await sendNewPurchaseEmail();
-    res.json(result);
+    res.json({ operation: 'Send New Purchase Email', ...result });
 });
 
 // Endpoint to simulate server status notifications
