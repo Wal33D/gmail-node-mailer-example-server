@@ -54,8 +54,24 @@ window.onload = function () {
         }
     };
     var guideButton = document.querySelector('[data-target="#setupGuideModal"]');
+    
     guideButton.addEventListener('click', function () {
         fetch('/files/ServiceAccountSetupGuide.md')
+            .then(response => response.text())
+            .then(text => {
+                const converter = new showdown.Converter();
+                const html = converter.makeHtml(text);
+                document.getElementById('markdownContainer').innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('markdownContainer').innerHTML = '<p>Error loading the guide.</p>';
+                console.error('Error loading the markdown file:', error);
+            });
+    });
+    var examplCodeDemo = document.querySelector('[data-target="#demoGuideModal"]');
+    
+    examplCodeDemo.addEventListener('click', function () {
+        fetch('/files/demoUse.md')
             .then(response => response.text())
             .then(text => {
                 const converter = new showdown.Converter();
