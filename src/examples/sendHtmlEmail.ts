@@ -40,67 +40,66 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
     const senderName = 'gmail-node-mailer';
 
     const message = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; }
-        .container { max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
-        .header { background-color: #003366; color: white; padding: 20px; text-align: center; }
-        .content { padding: 30px; text-align: left; font-size: 16px; color: #333; }
-        .code { background-color: #e8f0fe; padding: 15px; font-family: monospace; color: #0056b3; border-left: 5px solid #0056b3; margin-top: 20px; }
-        .footer { background-color: #003366; color: white; padding: 20px; text-align: center; }
-        a { color: #FFD700; text-decoration: none; font-weight: bold; }
-        a:hover { text-decoration: underline; }
-        @media (max-width: 600px) {
-            .header, .content, .footer { padding: 15px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Welcome to the gmail-node-mailer Demo!</h1>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
+            .container { max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
+            .header { background-color: #004488; color: white; padding: 20px; text-align: center; }
+            .content { padding: 20px; text-align: left; font-size: 14px; color: #333; }
+            .code { background-color: #eef2f7; padding: 10px; font-family: 'Courier New', monospace; color: #0077CC; border-left: 4px solid #0077CC; margin-top: 20px; }
+            .footer { background-color: #004488; color: white; padding: 20px; text-align: center; }
+            a { color: #FFD740; text-decoration: none; font-weight: bold; }
+            a:hover { text-decoration: underline; }
+            @media (max-width: 600px) {
+                .header, .content, .footer { padding: 10px; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Welcome to the gmail-node-mailer Demo!</h1>
+            </div>
+            <div class="content">
+                <p>Hello,</p>
+                <p>Before you can send emails, you need to initialize the gmail-node-mailer client. Below is how you set up the email client:</p>
+                <pre class="code">const { status, gmailClient, message } = await initializeEmailClient();
+    if (status) {
+        console.log('Initialization successful!');
+    } else {
+        console.error('Initialization failed:', message);
+    }</pre>
+                <p>Once initialized, sending an email is straightforward:</p>
+                <pre class="code">const response = await gmailClient.sendEmail({
+        recipientEmail,
+        message,
+        subject,
+    } as ISendEmailParams);
+    console.log(response);</pre>
+                <p>Here's an example of what the response might look like:</p>
+                <pre class="code">{
+    sent: true,
+    status: 200,
+    statusText: 'OK',
+    responseUrl: 'https://gmail.googleapis.com/gmail/v...',
+    message: 'Email successfully sent to waleed@glitchgaming.us.',
+    gmailResponse: {/* Gmail Response Object */}
+    }</pre>
+                <p>Your account is now fully activated, and you can begin exploring all our features.</p>
+            </div>
+            <div class="footer">
+                <p>Need assistance? Contact us at <a href="mailto:support@gmail-node-mailer-demo.com">support@gmail-node-mailer-demo.com</a></p>
+            </div>
         </div>
-        <div class="content">
-            <p>Hello,</p>
-            <p>This email provides a detailed look at how to send HTML formatted messages using the gmail-node-mailer package. Below is an explanation of the parameters you can use:</p>
-            <pre class="code">
-ISendEmailParams {
-    recipientEmail: string;  // The email address of the recipient.
-    senderEmail?: string;    // Optional. The email address of the sender.
-    senderName?: string;     // Optional. The name of the sender.
-    subject?: string;        // Optional. The subject line of the email.
-    message: string;         // The HTML content of the email.
-    attachments?: IAttachment[]; // Optional. Array of attachments.
-}
-
-IAttachment {
-    filename: string;    // Name of the file to be attached.
-    mimeType: string;    // MIME type of the file.
-    content: string;     // Base64 encoded content of the file.
-}
-
-ISendEmailResponse {
-    sent: boolean;               // Whether the email was successfully sent.
-    status: number | null;       // HTTP status code of the send email attempt.
-    statusText: string | null;   // Status text corresponding to the status code.
-    responseUrl: string | null;  // URL of the API endpoint used to send the email.
-    message: string;             // Success or error message.
-    gmailResponse: any | null;   // The full response from the Gmail API.
-}
-            </pre>
-            <p>Your account is now fully activated, and you can begin exploring all our features.</p>
-        </div>
-        <div class="footer">
-            <p>Need assistance? Contact us at <a href="mailto:support@gmail-node-mailer-demo.com">support@gmail-node-mailer-demo.com</a></p>
-        </div>
-    </div>
-</body>
-</html>
+    </body>
+    </html>
+    
     `;
+
     return await global.gmailClient.sendEmail({
         recipientEmail,
         senderName,
