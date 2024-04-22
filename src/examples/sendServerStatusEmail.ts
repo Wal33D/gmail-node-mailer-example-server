@@ -53,23 +53,42 @@ export async function sendServerStatusEmail(status: 'start' | 'shutdown'): Promi
     <html>
     <head>
         <style>
-            body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
-            h1 { color: #0A3E5D; } /* Deep Sapphire Blue for headers */
-            p { color: #666666; } /* Cool Gray for body text */
-            footer { font-size: 16px; text-align: center; margin-top: 20px; }
-            a { color: #0A3E5D; text-decoration: none; } /* Link color in deep sapphire blue */
+            /* Basic reset and fonts setup */
+            body, html { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f4; }
+            /* Container for the email content */
+            .container { background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+            /* Styling for the header */
+            .header { background-color: #E0EFFF; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
+            h1 { color: #0A3E5D; font-size: 28px; margin: 0; }
+            /* Main content styles */
+            .status-details { background-color: #F8F8F8; padding: 20px; border-radius: 5px; margin-top: 20px; color: #333; }
+            p { font-size: 16px; line-height: 1.5; margin: 10px 0; }
+            .status-update { font-weight: 600; } /* Bolder font for important updates */
+            /* Footer styles */
+            .footer { font-size: 16px; text-align: center; padding: 20px; border-top: 1px solid #ccc; margin-top: 20px; }
+            a, .support-link { color: #0A3E5D; text-decoration: none; font-weight: 600; }
+            .footer a { color: #007bff; text-decoration: underline; }
+            /* Icon styles for fun and clear visual cues */
+            .status-icon { font-size: 48px; vertical-align: middle; }
         </style>
     </head>
     <body>
-        <h1>${status === 'start' ? '🚀 Server Starting' : '🌙 Server Shutting Down'}</h1>
-        <p>The server is ${status === 'start' ? 'starting' : 'shutting down'} at ${formattedTime}.</p>
-        <p>This email confirms the ${status === 'start' ? 'activation' : 'deactivation'} of server processes.</p>
-        <footer>
-            <p>Contact support at <a href="mailto:support@somnuslabs.com">support@somnuslabs.com</a> if you have any concerns.</p>
-        </footer>
+        <div class="container">
+            <div class="header">
+                <h1><span class="status-icon">${status === 'start' ? '🚀' : '🌙'}</span> Server ${status === 'start' ? 'Starting' : 'Shutting Down'}</h1>
+            </div>
+            <div class="status-details">
+                <p>The server is ${status === 'start' ? 'currently starting up' : 'currently shutting down'} as of ${formattedTime}.</p>
+                <p class="status-update">This email confirms the ${status === 'start' ? 'activation' : 'deactivation'} of the server processes. For more details, please check the server dashboard or contact support if you notice any issues.</p>
+            </div>
+            <footer>
+                <p>Need help? <a href="mailto:support@somnuslabs.com" class="support-link">Contact support</a> if you have any concerns or require assistance.</p>
+            </footer>
+        </div>
     </body>
     </html>
     `;
+    
     const serverHistoryFilePath = './dummyFiles/ServerHistory.csv';
     const serverHistoryEntry = `${formattedTime},${status === 'start' ? 'Server Start' : 'Server Shutdown'},Successful\n`;
 
