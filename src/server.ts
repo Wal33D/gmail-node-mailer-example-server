@@ -32,11 +32,11 @@
 require('dotenv-flow').config();
 
 import opener from 'opener';
-import router from './src/routes'; // Import the router from the routes file
+import router from './routes'; // Import the router from the routes file
 import express from 'express';
 import serveIndex from 'serve-index';
 
-import { initializeEmailClient } from './src/init/initializeEmailClient';
+import { initializeEmailClient } from './init/initializeEmailClient';
 
 declare global {
     var gmailClient: any;

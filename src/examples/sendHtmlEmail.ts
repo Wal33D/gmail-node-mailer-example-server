@@ -64,64 +64,45 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
                 <h1>Welcome to the gmail-node-mailer Demo!</h1>
             </div>
             <div class="content">
-            <p>Hello,</p>
-            <p>Before you can send emails, you need to initialize the gmail-node-mailer client. This involves setting up the sender's email and the service account configuration. The package allows two ways to specify the service account:</p>
-            <ul>
-                <li>Directly by providing the JSON data through an environment variable.</li>
-                <li>By specifying a file path to the JSON file that contains the service account details.</li>
-            </ul>
-            <p>Here’s how you can configure your client securely using one of these methods:</p>
-            <pre class="code">
-import { GmailMailer } from 'gmail-node-mailer';
-const gmailMailer = new GmailMailer();
-        
-const gmailSenderEmail = process.env.GMAIL_MAILER_SENDER_EMAIL;
-let gmailServiceAccount;
-        
-gmailServiceAccount = JSON.parse(process.env.GMAIL_MAILER_SERVICE_ACCOUNT); 
-or 
-gmailServiceAccountPath = process.env.GMAIL_MAILER_SERVICE_ACCOUNT_PATH;
-        
-const { status, gmailClient, message } = await initializeEmailClient({
-    gmailServiceAccount,
-    gmailSenderEmail
-});
-        
-        if (status) {
-            console.log('Initialization successful!');
-        } else {
-            console.error('Initialization failed:', message);
-        }
-            </pre>
-            <p>Once initialized, sending an email is straightforward:</p>
-            <pre class="code">
-        const response = await gmailClient.sendEmail({
-            recipientEmail: 'recipient@example.com',
-            message: 'Hello, this is a test message sent from gmail-node-mailer!',
-            subject: 'Test Email'
-        });
-        console.log(response);
-            </pre>
-            <p>Here's an example of what the response might look like:</p>
-            <pre class="code">{
-            sent: true,
-            status: 200,
-            statusText: 'OK',
-            responseUrl: 'https://gmail.googleapis.com/gmail/v...',
-            message: 'Email successfully sent to recipient@example.com.',
-            gmailResponse: {/* Gmail Response Object */}
-        }
-            </pre>
-            <p>Your account is now fully activated, and you can begin exploring all our features.</p>
-        </div>
-               <div class="footer">
+                <p>Hello,</p>
+                <p>Before you can send emails, you need to initialize the gmail-node-mailer client. You will need to provide either a service account as JSON, or a file path to a JSON file, along with your Gmail sender email:</p>
+                <pre class="code">import { GmailMailer } from 'gmail-node-mailer';
+    const gmailMailer = new GmailMailer();
+    
+    const initializationParams = {
+        gmailSenderEmail: process.env.GMAIL_MAILER_SENDER_EMAIL,
+        gmailServiceAccountPath: process.env.GMAIL_MAILER_SERVICE_ACCOUNT_PATH // or gmailServiceAccount
+    };
+    
+    const { gmailClient } = await gmailMailer.initializeClient(initializationParams);
+    
+    const response = await gmailClient.sendEmail({
+        recipientEmail: 'recipient@example.com',
+        message: 'Hello, this is a test message sent from gmail-node-mailer!',
+        subject: 'Test Email'
+    });
+    console.log(response);
+                </pre>
+                <p>Here's an example of what the response might look like:</p>
+                <pre class="code">{
+        sent: true,
+        status: 200,
+        statusText: 'OK',
+        responseUrl: 'https://gmail.googleapis.com/gmail/v...',
+        message: 'Email successfully sent to recipient@example.com.',
+        gmailResponse: {/* Gmail Response Object */}
+    }</pre>
+                <p>Your account is now fully activated, and you can begin exploring all our features.</p>
+            </div>
+            <div class="footer">
                 <p>Need assistance? Contact us at <a href="mailto:support@gmail-node-mailer-demo.com">support@gmail-node-mailer-demo.com</a></p>
             </div>
         </div>
     </body>
     </html>
-    `;    
-
+    `;
+    
+    
     return await global.gmailClient.sendEmail({
         recipientEmail,
         senderName,
