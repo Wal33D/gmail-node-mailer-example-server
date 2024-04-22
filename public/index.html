@@ -47,7 +47,8 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                     data-target="#setupGuideModal">View Setup Guide</a>
 
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#demoGuideModal">View
+                                <a class="dropdown-item" href="#" data-toggle="modal" 
+                                data-target="#demoGuideModal">View
                                     Demo Guide</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                     data-target="#envVariablesModal">Environment Setup</a>
@@ -185,48 +186,46 @@
                 </div>
             </div>
         </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="setupGuideModal" tabindex="-1" role="dialog" aria-labelledby="setupGuideModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="setupGuideModalLabel">Service Account Setup Guide</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="markdownContainer">
-                        <!-- Content will be loaded by JavaScript -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
+<!-- Modal for Service Account Setup Guide -->
+<div class="modal fade" id="setupGuideModal" tabindex="-1" role="dialog" aria-labelledby="setupGuideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="setupGuideModalLabel">Service Account Setup Guide</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="markdownContainerSetup">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="demoGuideModal" tabindex="-1" role="dialog" aria-labelledby="demoGuideModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="demoGuideModalLabel">Example Code Sample</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body" id="markdownContainer">
-                        <!-- Content will be loaded by JavaScript -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
+<!-- Modal for Demo Guide -->
+<div class="modal fade" id="demoGuideModal" tabindex="-1" role="dialog" aria-labelledby="demoGuideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="demoGuideModalLabel">Example Code Sample</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="markdownContainerDemo">
+                <!-- Content will be loaded by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
+    </div>
+</div>
+
         <!-- Environment Variables Modal -->
         <div class="modal fade" id="envVariablesModal" tabindex="-1" role="dialog"
             aria-labelledby="envVariablesModalLabel" aria-hidden="true">

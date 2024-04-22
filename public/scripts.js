@@ -53,37 +53,31 @@ window.onload = function () {
             console.error('Could not inject CSS into iframe:', error);
         }
     };
-    var guideButton = document.querySelector('[data-target="#setupGuideModal"]');
-    
-    guideButton.addEventListener('click', function () {
-        fetch('/files/ServiceAccountSetupGuide.md')
+    var setupGuideButton = document.querySelector('[data-target="#setupGuideModal"]');
+    var demoGuideButton = document.querySelector('[data-target="#demoGuideModal"]');
+    var setupMarkdownContainer = document.getElementById('markdownContainerSetup');
+    var demoMarkdownContainer = document.getElementById('markdownContainerDemo');
+
+    setupGuideButton.addEventListener('click', function () {
+        loadMarkdown('/files/ServiceAccountSetupGuide.md', setupMarkdownContainer);
+    });
+
+    demoGuideButton.addEventListener('click', function () {
+        loadMarkdown('/files/demoUse.md', demoMarkdownContainer);
+    });
+
+    function loadMarkdown(filePath, container) {
+        fetch(filePath)
             .then(response => response.text())
             .then(text => {
                 const converter = new showdown.Converter();
-                const html = converter.makeHtml(text);
-                document.getElementById('markdownContainer').innerHTML = html;
+                container.innerHTML = converter.makeHtml(text);
             })
             .catch(error => {
-                document.getElementById('markdownContainer').innerHTML = '<p>Error loading the guide.</p>';
+                container.innerHTML = '<p>Error loading the guide.</p>';
                 console.error('Error loading the markdown file:', error);
             });
-    });
-    var examplCodeDemo = document.querySelector('[data-target="#demoGuideModal"]');
-    
-    examplCodeDemo.addEventListener('click', function () {
-        fetch('/files/demoUse.md')
-            .then(response => response.text())
-            .then(text => {
-                const converter = new showdown.Converter();
-                const html = converter.makeHtml(text);
-                document.getElementById('markdownContainer').innerHTML = html;
-            })
-            .catch(error => {
-                document.getElementById('markdownContainer').innerHTML = '<p>Error loading the guide.</p>';
-                console.error('Error loading the markdown file:', error);
-            });
-    });
-    
+    }
     $('#fileDirectoryModal').on('show.bs.modal', function() {
         fetch('http://localhost:6338/files')  // Update URL as needed
             .then(response => response.json())  // Adjust this if the endpoint returns HTML or text
