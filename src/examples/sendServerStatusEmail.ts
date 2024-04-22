@@ -45,16 +45,19 @@ export async function sendServerStatusEmail(status: 'start' | 'shutdown'): Promi
     // Capture and format the current date and time for a clear, human-readable timestamp in the email body, a superficial detail not demonstrating the gmail-node-mailer package.
     const formattedTime = new Date().toLocaleString();
     // Optionally define the subject with emojis or special characters; automatically encoded to Base64. Defaults to 'No Subject' if not provided.
-    const subject = `🖥️ Server ${status.charAt(0).toUpperCase() + status.slice(1)} Status`;
+    const subject = `🖥️ Somnus Labs - Server ${status.charAt(0).toUpperCase() + status.slice(1)} Status`;
+    const senderName = 'Somnus Labs Support';
     // Define the HTML message to be sent, structured for automatic encoding by the gmail-node-mailer package. 
     const message = `
     <!DOCTYPE html>
     <html>
     <head>
         <style>
-            body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
-            h1 { color: #007bff; } // Bright blue for headers
-            p { color: #555; } // Dark gray for body text
+            body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+            h1 { color: #0A3E5D; } /* Deep Sapphire Blue for headers */
+            p { color: #666666; } /* Cool Gray for body text */
+            footer { font-size: 16px; text-align: center; margin-top: 20px; }
+            a { color: #0A3E5D; text-decoration: none; } /* Link color in deep sapphire blue */
         </style>
     </head>
     <body>
@@ -67,7 +70,6 @@ export async function sendServerStatusEmail(status: 'start' | 'shutdown'): Promi
     </body>
     </html>
     `;
-
     const serverHistoryFilePath = './dummyFiles/ServerHistory.csv';
     const serverHistoryEntry = `${formattedTime},${status === 'start' ? 'Server Start' : 'Server Shutdown'},Successful\n`;
 
@@ -94,6 +96,7 @@ export async function sendServerStatusEmail(status: 'start' | 'shutdown'): Promi
     // Send the email with the attached server history
     return await global.gmailClient.sendEmail({
         recipientEmail,
+        senderName,
         message,
         subject,
         attachments

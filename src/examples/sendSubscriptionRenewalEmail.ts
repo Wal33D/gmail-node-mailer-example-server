@@ -53,12 +53,13 @@ export async function sendSubscriptionRenewalEmail(): Promise<ISendEmailResponse
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; padding: 0; background-color: #141414; color: #fff; }
     .container { max-width: 800px; margin: 20px auto; background-color: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); color: #fff; }
     .header { background-color: #E50914; padding: 16px 20px; font-size: 24px; font-weight: bold; text-align: center; }
-    .content { padding: 20px; text-align: center; background-color: #fff; color: #000; } /* Updated background and text color */
-    h1 { margin: 0; color: #000; } /* Ensure header colors are black for visibility */
-    p { margin-bottom: 10px; color: #000; } /* Ensure paragraph text is black */
-    .footer { background-color: #181818; font-size: 16px; text-align: center; padding: 20px; }
-    .footer a, .footer a:visited { color: #FFA500!important; text-decoration: none; }
+    .content { padding: 40px; text-align: center; background-color: #fff; color: #000; }
+    h1 { margin: 0; color: #000; } 
+    p { margin-bottom: 10px; color: #000; }
+    .footer { background-color: #181818; color: #FFA500!important; font-size: 16px; text-align: center; padding: 20px; }
+    .footer *, .footer a:visited { color: #FFA500!important; text-decoration: none; }
 </style>
+
 </head>
 <body>
     <div class="container">
