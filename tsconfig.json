@@ -17,5 +17,5 @@
       "*": ["src/*", "node_modules/*"]
     }
   },
-  "include": ["global.d.ts", "src/**/*.js", "src/**/*.json", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["global.d.ts", "src/**/*.js", "src/**/*.json", "src/**/*.ts", "src/**/*.tsx", "server.ts"]
 }
