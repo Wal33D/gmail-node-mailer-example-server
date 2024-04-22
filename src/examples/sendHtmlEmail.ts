@@ -66,21 +66,32 @@ export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
         </div>
         <div class="content">
             <p>Hello,</p>
-            <p>This email demonstrates how you can send HTML formatted messages using the gmail-node-mailer package. Below is a simple example of how to use the package to send an email and handle the response:</p>
-            <pre class="code">const response = await global.gmailClient.sendEmail({
-    recipientEmail,
-    message,
-    subject,
-} as ISendEmailParams);
+            <p>This email provides a detailed look at how to send HTML formatted messages using the gmail-node-mailer package. Below is an explanation of the parameters you can use:</p>
+            <pre class="code">
+ISendEmailParams {
+    recipientEmail: string;  // The email address of the recipient.
+    senderEmail?: string;    // Optional. The email address of the sender.
+    senderName?: string;     // Optional. The name of the sender.
+    subject?: string;        // Optional. The subject line of the email.
+    message: string;         // The HTML content of the email.
+    attachments?: IAttachment[]; // Optional. Array of attachments.
+}
 
-console.log({
-  sent: true,
-  status: 200,
-  statusText: 'OK',
-  responseUrl: 'https://gmail.googleapis.com/gmail/v...',
-  message: 'Email successfully sent to user@domain.us.',
-  gmailResponse: {...} //Complete Gmail Response Object
-});</pre>
+IAttachment {
+    filename: string;    // Name of the file to be attached.
+    mimeType: string;    // MIME type of the file.
+    content: string;     // Base64 encoded content of the file.
+}
+
+ISendEmailResponse {
+    sent: boolean;               // Whether the email was successfully sent.
+    status: number | null;       // HTTP status code of the send email attempt.
+    statusText: string | null;   // Status text corresponding to the status code.
+    responseUrl: string | null;  // URL of the API endpoint used to send the email.
+    message: string;             // Success or error message.
+    gmailResponse: any | null;   // The full response from the Gmail API.
+}
+            </pre>
             <p>Your account is now fully activated, and you can begin exploring all our features.</p>
         </div>
         <div class="footer">
@@ -90,7 +101,6 @@ console.log({
 </body>
 </html>
     `;
-
     return await global.gmailClient.sendEmail({
         recipientEmail,
         senderName,
