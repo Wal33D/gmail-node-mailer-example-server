@@ -75,13 +75,19 @@ window.onload = function () {
             demoVersionInfo.textContent = 'Error loading version';
         });
         
-    fetch('/npm-downloads')
+
+    fetch('http://localhost:6338/npm-package-details')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('npm-downloads-info').textContent = `Weekly Downloads: ${data.downloads}`;
+            document.getElementById('package-name').innerHTML = `<strong>Package Name:</strong> ${data.packageName}`;
+            document.getElementById('package-downloads').innerHTML = `<strong>Total Downloads:</strong> ${data.totalDownloads}`;
+            document.getElementById('package-version').innerHTML = `<strong>Latest Version:</strong> ${data.latestVersion} (updated on ${data.lastUpdated})`;
+            document.getElementById('package-description').innerHTML = `<strong>Description:</strong> ${data.description}`;
+            document.getElementById('package-url').href = data.npmUrl;
+            document.getElementById('package-url').innerHTML = 'Visit npm Package Page';
         })
         .catch(error => {
-            console.error('Error fetching download data:', error);
-            document.getElementById('npm-downloads-info').textContent = 'Failed to load download data';
+            console.error('Error fetching package details:', error);
+            document.getElementById('package-name').innerHTML = '<strong>Error:</strong> Failed to load package details.';
         });
 };
