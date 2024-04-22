@@ -19,7 +19,7 @@
     </nav>
     <div class="container mt-4">
         <div class="row">
-            
+
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
@@ -57,30 +57,39 @@
                 <div class="mb-4">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Demo Email Samples</h4>
+                            <h4>demo email samples</h4>
                         </div>
                         <div class="card-body">
                             <div class="email-actions">
-                                <button onclick="makeRequest('/simulate-server-status')" class="btn btn-primary w-100 mb-2">
+                                <button onclick="makeRequest('/simulate-server-status')"
+                                    class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-envelope-fill"></i> Trigger Server Status Notification
                                 </button>
                                 <button onclick="makeRequest('/send-html-email')" class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-send-fill"></i> Send HTML Email
                                 </button>
-                                <button onclick="makeRequest('/send-plain-text-email')" class="btn btn-primary w-100 mb-2">
+                                <button onclick="makeRequest('/send-plain-text-email')"
+                                    class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-chat-text-fill"></i> Send Basic Text Email
                                 </button>
-                                <button onclick="makeRequest('/send-html-email-attachment')" class="btn btn-primary w-100 mb-2">
+                                <button onclick="makeRequest('/send-html-email-attachment')"
+                                    class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-paperclip"></i> Send Email with File Attachment
                                 </button>
-                                <button onclick="makeRequest('/send-subscription-renewal')" class="btn btn-primary w-100 mb-2">
+                                <button onclick="makeRequest('/send-subscription-renewal')"
+                                    class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-arrow-repeat"></i> Send Renew Subscription Email
                                 </button>
                                 <button onclick="makeRequest('/send-new-purchase')" class="btn btn-primary w-100 mb-2">
                                     <i class="bi bi-bag-fill"></i> Send Sample eBook Purchase Email
                                 </button>
                             </div>
-                            
+                        </div>
+                        <div class="card-footer">
+                            <a href="/files" class="d-block" target="_blank"><i class="fas fa-folder-open"></i>
+                                Sample
+                                Files
+                                Directory</a>
                         </div>
                     </div>
                 </div>
@@ -101,37 +110,23 @@
                             </a>
                             <span id="demo-server-version-info" class="badge badge-info ml-2">Loading version...</span>
                         </div>
+                        <hr />
+                        <a class="github-button" href="https://github.com/our-node-packages/gmail-node-mailer"
+                            data-icon="octicon-star" data-size="large" data-show-count="true"
+                            aria-label="Star our-node-packages/gmail-node-mailer on GitHub">Star</a>
 
-                        <div class="card">
-                            <div class="card-body">
-                                <span class="badge badge-secondary">Node.js</span>
-                                <span class="badge badge-secondary">npm</span>
-                                <hr />
-                                <div id="npm-downloads-info">Loading downloads...</div>
+                        <a class="github-button"
+                            href="https://github.com/our-node-packages/gmail-node-mailer/subscription"
+                            data-icon="octicon-eye" data-size="large" data-show-count="true"
+                            aria-label="Watch our-node-packages/gmail-node-mailer on GitHub">Watch</a>
 
-                                <!-- GitHub Star Button -->
-                                <a class="github-button" href="https://github.com/our-node-packages/gmail-node-mailer"
-                                    data-icon="octicon-star" data-size="large" data-show-count="true"
-                                    aria-label="Star our-node-packages/gmail-node-mailer on GitHub">Star</a>
+                        <a class="github-button" href="https://github.com/our-node-packages/gmail-node-mailer/issues"
+                            data-icon="octicon-issue-opened" data-size="large" data-show-count="true"
+                            aria-label="Issue on GitHub">Issue</a>
 
-                                <a class="github-button"
-                                    href="https://github.com/our-node-packages/gmail-node-mailer/subscription"
-                                    data-icon="octicon-eye" data-size="large" data-show-count="true"
-                                    aria-label="Watch our-node-packages/gmail-node-mailer on GitHub">Watch</a>
-
-                                <!-- GitHub Issue Button -->
-                                <a class="github-button"
-                                    href="https://github.com/our-node-packages/gmail-node-mailer/issues"
-                                    data-icon="octicon-issue-opened" data-size="large" data-show-count="true"
-                                    aria-label="Issue on GitHub">Issue</a>
-
-                                <!-- GitHub Fork Button -->
-                                <a class="github-button"
-                                    href="https://github.com/our-node-packages/gmail-node-mailer/fork"
-                                    data-icon="octicon-repo-forked" data-size="large" data-show-count="true"
-                                    aria-label="Fork on GitHub">Fork</a>
-                            </div>
-                        </div>
+                        <a class="github-button" href="https://github.com/our-node-packages/gmail-node-mailer/fork"
+                            data-icon="octicon-repo-forked" data-size="large" data-show-count="true"
+                            aria-label="Fork on GitHub">Fork</a>
                     </div>
                 </div>
                 <div class="card">
@@ -143,26 +138,9 @@
                         <div id="package-downloads"></div>
                         <div id="package-version"></div>
                         <div id="package-description"></div>
-                        <div id="package-keywords"></div>
-                        <a id="package-url" href="#">Visit npm Package</a>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    
-                    <div class="card-body">
-                        <h4>npm</h4>
-
-                        <div class="card">
-                            <div class="card-body">
-                                <a href="https://www.npmjs.com/package/gmail-node-mailer" class="d-block"
-                                    target="_blank"><i class="fab fa-npm"></i> npm Package</a>
-                                <a href="/files" class="d-block" target="_blank"><i class="fas fa-folder-open"></i>
-                                    Sample
-                                    Files
-                                    Directory</a>
-                            </div>
-                        </div>
+                        <div id="package-keywords" class="keywords-container"></div>
+                        <a href="https://www.npmjs.com/package/gmail-node-mailer" class="d-block" target="_blank"><i
+                                class="fab fa-npm"></i> npm Package</a>
                     </div>
                 </div>
             </div>

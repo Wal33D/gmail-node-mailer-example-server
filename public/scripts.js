@@ -86,8 +86,11 @@ window.onload = function () {
             document.getElementById('package-url').href = data.npmUrl;
             document.getElementById('package-url').innerHTML = 'Visit npm Package Page';
 
-            let keywordsHtml = '<strong>Keywords:</strong> ';
-            keywordsHtml += data.keywords.join(', ');
+            // Handle keywords
+            let keywordsHtml = '';
+            data.keywords.forEach(keyword => {
+                keywordsHtml += `<span class="badge badge-secondary">${keyword}</span> `;
+            });
             document.getElementById('package-keywords').innerHTML = keywordsHtml;
         })
         .catch(error => {
