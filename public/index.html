@@ -48,6 +48,8 @@
                                     data-target="#setupGuideModal">View Setup Guide</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                     data-target="#envVariablesModal">Environment Setup</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#fileDirectoryModal">Sample File Directory</a>
                                 <a class="dropdown-item" href="https://www.npmjs.com/package/gmail-node-mailer"
                                     target="_blank">npm Package Page</a>
                             </div>
@@ -127,11 +129,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#fileDirectoryModal">
-                                    <i class="fas fa-folder-open"></i> View Sample Files Directory
-                                </button>
-                            </div>
                         </div>
                     </div>
                     <div class="card">
@@ -175,15 +172,14 @@
                             <h4>npm Package Details</h4>
                         </div>
                         <div class="card-body">
+
                             <div id="package-name"></div>
+                            <a href="https://www.npmjs.com/package/gmail-node-mailer" class="d-block" target="_blank"><i
+                                class="fab fa-npm"></i> npm Package</a>
                             <div id="package-downloads"></div>
                             <div id="package-version"></div>
                             <div id="package-description"></div>
                             <div id="package-keywords" class="keywords-container"></div>
-                            <a href="https://www.npmjs.com/package/gmail-node-mailer" class="d-block" target="_blank"><i
-                                    class="fab fa-npm"></i> npm Package</a>
-                            <button id="viewSetupGuide" class="btn btn-outline-primary mt-3" data-toggle="modal"
-                                data-target="#setupGuideModal">View Setup Guide</button>
                         </div>
                     </div>
                 </div>
@@ -277,10 +273,11 @@ GMAIL_MAILER_SERVICE_ACCOUNT_PATH=<path-to-your-service-account-file>
 
     </body>
     <style>
-        #fileDirectoryModal * {
+        #fileDirectoryModal .modal-content .modal-body iframe img {
             max-height: 300px;
-            width: auto;  /* Maintain aspect ratio */
+            width: auto;
+            /* Maintain aspect ratio */
         }
     </style>
-    
-</html>
+
+    </html>

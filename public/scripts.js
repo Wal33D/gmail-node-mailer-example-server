@@ -41,7 +41,18 @@ function appendRow(data, logElement) {
 
 
 window.onload = function () {
-    
+    var iframe = document.getElementById('fileDirectoryFrame');
+    iframe.onload = function() {
+        try {
+            var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+            var styleElement = iframeDocument.createElement('style');
+            styleElement.type = 'text/css';
+            styleElement.innerHTML = 'img { max-height: 400px; width: auto; }';  // CSS rules
+            iframeDocument.head.appendChild(styleElement);
+        } catch (error) {
+            console.error('Could not inject CSS into iframe:', error);
+        }
+    };
     var guideButton = document.querySelector('[data-target="#setupGuideModal"]');
     guideButton.addEventListener('click', function () {
         fetch('/files/ServiceAccountSetupGuide.md')
@@ -118,8 +129,6 @@ window.onload = function () {
             document.getElementById('package-downloads').innerHTML = `<strong>Total Downloads:</strong> ${data.totalDownloads}`;
             document.getElementById('package-version').innerHTML = `<strong>Latest Version:</strong> ${data.latestVersion} (updated on ${data.lastUpdated})`;
             document.getElementById('package-description').innerHTML = `<strong>Description:</strong> ${data.description}`;
-            document.getElementById('package-url').href = data.npmUrl;
-            document.getElementById('package-url').innerHTML = 'Visit npm Package Page';
 
             // Handle keywords
             let keywordsHtml = '';
@@ -130,7 +139,6 @@ window.onload = function () {
         })
         .catch(error => {
             console.error('Error fetching package details:', error);
-            document.getElementById('package-name').innerHTML = '<strong>Error:</strong> Failed to load package details.';
         });
 };
 
