@@ -15,6 +15,7 @@
  *     {
  *       recipientEmail: string,
  *       senderEmail?: string,  // Optional. Defaults to the email address initialized in the GmailMailer class if not provided.
+ *       senderName?: string;// Optional. Defaults to the string after the @ symbol in the senderEmail if not provided.
  *       subject?: string,  // Optional. Defaults to 'No Subject' if not provided.
  *       message: string,
  *       attachments?: IAttachment[]
