@@ -35,35 +35,48 @@
 import { ISendEmailParams, ISendEmailResponse } from 'gmail-node-mailer';
 
 export async function sendHtmlEmail(): Promise<ISendEmailResponse> {
-    // Define the recipient's email address to whom the welcome email will be sent.
     const recipientEmail = 'waleed@glitchgaming.us';
-    // Subject of the email, which includes an emoji; the package automatically encodes it to Base64.
-    const subject = '🎉 Welcome to Our Service!';
-    // Define the HTML message to be sent, structured for automatic encoding by the gmail-node-mailer package.
+    const subject = '🎉 HTML Email Demo with gmail-node-mailer!';
+    const senderName = 'gmail-node-mailer';
     const message = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <style>
-            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f0f0f0; }
-            .header { background-color: #007bff; color: white; padding: 10px; text-align: center; }
-            .footer { background-color: #007bff; color: white; padding: 10px; text-align: center; }
-        </style>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; }
+        .container { max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .header { background-color: #003366; color: white; padding: 20px; text-align: center; }
+        .content { padding: 30px; text-align: left; font-size: 16px; color: #333; }
+        .footer { background-color: #003366; color: white; padding: 20px; text-align: center; }
+        a { color: #FFD700; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 600px) {
+            .header, .content, .footer { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
         <div class="header">
-            <h1>Service Notification</h1>
+            <h1>Welcome to the gmail-node-mailer Demo!</h1>
         </div>
-        <p>Thank you for using our service. Your account is fully activated!</p>
+        <div class="content">
+            <p>Hello,</p>
+            <p>This email demonstrates how you can send HTML formatted messages using the gmail-node-mailer package. Experience seamless email integration with your applications.</p>
+            <p>Your account is now fully activated, and you can begin exploring all our features.</p>
+        </div>
         <div class="footer">
-            <p>Contact us at <a href="mailto:no-reply@somnuslabs.com" style="color: white;">no-reply@somnuslabs.com</a></p>
+            <p>Need assistance? Contact us at <a href="mailto:support@gmail-node-mailer-demo.com">support@gmail-node-mailer-demo.com</a></p>
         </div>
-    </body>
-    </html>
+    </div>
+</body>
+</html>
     `;
-
     return await global.gmailClient.sendEmail({
         recipientEmail,
+        senderName,
         message,
         subject,
     } as ISendEmailParams) as ISendEmailResponse;
